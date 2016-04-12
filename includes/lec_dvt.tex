@@ -1,0 +1,17 @@
+% http://tex.stackexchange.com/a/200473/82912
+\NewDocumentCommand{\DIV}{om}{%
+  \IfValueT{#1}{\setcounter{#2}{\numexpr#1-1\relax}}%
+  \csname #2\endcsname
+}
+
+% http://tex.stackexchange.com/a/174610/82912
+\usepackage{tocloft}
+\cftsetindents{section}{0em}{3em}
+\cftsetindents{subsection}{3em}{4em}
+
+% Me
+\newcommand\lec[2]{\DIV[#1]{section}{#2}\label{lec:#1}}
+\newcommand\lecref[1]{\nameref{lec:#1}}
+\newcommand\dvt[2]{\section{#2}\label{dvt:#1}}
+\newcommand\dvtref[1]{\nameref{dvt:#1}}
+\newcommand\dvts[2]{}

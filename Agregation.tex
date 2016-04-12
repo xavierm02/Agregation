@@ -1,0 +1,86 @@
+\documentclass[10pt,a4paper]{report}
+\RequirePackage[l2tabu, orthodox]{nag}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage{xpatch}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{refcount}
+\usepackage{subfiles}
+\usepackage{microtype}
+\usepackage{mathtools}
+
+\usepackage[autostyle]{csquotes}
+\usepackage{marvosym}
+\usepackage{xparse}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black,
+    bookmarks=true,
+    linktocpage=true,
+    hyperindex=true,
+    bookmarks=true
+}
+
+%http://tex.stackexchange.com/a/13761/82912
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}}
+  {\signed{\usebox\mybox}\end{quote}}
+
+
+\usepackage{pifont}
+\newcommand{\ok}{\textcolor{OliveGreen}{\ding{52}}}
+\newcommand{\todo}{\textcolor{blue}{\ding{228}}}
+\newcommand{\bof}{\textcolor{orange}{\Yingyang}}
+\newcommand{\nok}{\textcolor{red}{\ding{56}}}
+
+\providecommand{\base}{.}
+
+\usepackage[backend=bibtex,style=numeric]{biblatex}
+\bibliography{\base/includes/bib.bib}
+\nocite{*}
+
+
+\input{\base/includes/lec_dvt.tex}
+
+\AtEveryCitekey{%
+  \clearfield{url}%
+}
+
+\begin{document}
+
+\title{Agrégation}
+\author{Xavier \textsc{Montillet}}
+\maketitle
+\tableofcontents
+
+\newpage
+Notations :
+\begin{itemize}
+	\item[\todo] todo (pour les oraux blancs)
+	\item[\ok] ok
+	\item[\bof] bof (à changer si possible)
+	\item[\nok] pas ok
+\end{itemize}
+
+\subfile{\base/Informatique/Informatique.tex}
+
+\part{Mathématiques}
+
+\newrefsegment
+
+\end{document}

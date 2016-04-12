@@ -1,0 +1,27 @@
+\providecommand{\base}{../..}
+\documentclass[../../Agregation.tex]{subfiles}
+\begin{document}
+
+\lec{903}{\todo Exemples d'algorithmes de tri. Complexité.}
+
+\subsection{Rapport du jury}
+
+\begin{aquote}{\fullcite{agreg2015}}
+Sur un thème aussi classique, le jury attend des candidats la plus grande précision et la plus grande rigueur.
+
+Ainsi, sur l'exemple du tri rapide, il est attendu du candidat qu'il sache décrire avec soin l'algorithme de partition et en prouver la correction et que l'évaluation des complexités dans le cas le pire et en moyenne soit menée avec rigueur.
+
+On attend également du candidat qu'il évoque la question du tri en place, des tris stables, ainsi que la représentation en machine des collections triées.
+
+Le jury ne manquera pas de demander au candidat des applications non triviales du tri.
+\end{aquote}
+
+\subsection{Remarques}
+
+Quand on trie, on trie par rapport à un \emph{préordre} $\preccurlyeq$. On a donc aussi une relation d'équivalence $x\approx y\coloneqq (x\preccurlyeq y) \land (x\succcurlyeq y)$ qui n'a aucune raison d'être l'égalité.
+
+Si l'on note $\sqsubseteq$ le préordre associé au tableau donné en entrée d'un tri (donc $T[i]\sqsubseteq T[j] \iff i \le j$), le fait qu'une procédure de tri soit \emph{stable} veut dire que trier par rapport à $\preccurlyeq$ ou par rapport au préordre lexicographique associé à $(\preccurlyeq, \sqsubseteq)$ revient au même. En particulier, si on a une procédure de tri instable, on peut en construire une stable (mais le tri ne peut alors plus être \emph{en place} car pour pouvoir savoir si $x\sqsubseteq y$, on a besoin de stocker de tableau d'entrée et on est donc forcé de travailler sur une copie).
+
+La notion de tri stable n'a aucun intérêt si on se restreint aux entiers muni de leur ordre habituel (ou plus généralement à un ensemble muni d'un ordre [par opposition à un préordre]) car si l'on ne peut jamais distinguer $T[i]$ de $T[j]$, s'assurer qu'ils sont restés dans le même ordre n'est pas vraiment utile.
+
+\end{document}
