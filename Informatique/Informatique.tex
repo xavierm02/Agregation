@@ -4,6 +4,8 @@
 
 \part{Informatique}
 
+\tableofcontents
+
 \newrefsegment
 
 \chapter{Leçons}
@@ -12,26 +14,26 @@
 \subfile{\base/Informatique/Lecons/902.tex}
 \subfile{\base/Informatique/Lecons/903.tex}
 \subfile{\base/Informatique/Lecons/906.tex}
-\subfile{\base/Informatique/Lecons/907.tex}
-\subfile{\base/Informatique/Lecons/909.tex}
-\subfile{\base/Informatique/Lecons/910.tex}
+%\subfile{\base/Informatique/Lecons/907.tex}
+%\subfile{\base/Informatique/Lecons/909.tex}
+%\subfile{\base/Informatique/Lecons/910.tex}
 \subfile{\base/Informatique/Lecons/912.tex}
 \subfile{\base/Informatique/Lecons/913.tex}
-\subfile{\base/Informatique/Lecons/914.tex}
-\subfile{\base/Informatique/Lecons/915.tex}
+%%\subfile{\base/Informatique/Lecons/914.tex}
+%%\subfile{\base/Informatique/Lecons/915.tex}
 \subfile{\base/Informatique/Lecons/916.tex}
 \subfile{\base/Informatique/Lecons/917.tex}
-\subfile{\base/Informatique/Lecons/918.tex}
-\subfile{\base/Informatique/Lecons/919.tex}
-\subfile{\base/Informatique/Lecons/920.tex}
+%%\subfile{\base/Informatique/Lecons/918.tex}
+%%\subfile{\base/Informatique/Lecons/919.tex}
+%%\subfile{\base/Informatique/Lecons/920.tex}
 \subfile{\base/Informatique/Lecons/921.tex}
 \subfile{\base/Informatique/Lecons/922.tex}
-\subfile{\base/Informatique/Lecons/923.tex}
-\subfile{\base/Informatique/Lecons/924.tex}
+%\subfile{\base/Informatique/Lecons/923.tex}
+%%\subfile{\base/Informatique/Lecons/924.tex}
 \subfile{\base/Informatique/Lecons/925.tex}
-\subfile{\base/Informatique/Lecons/926.tex}
+%%\subfile{\base/Informatique/Lecons/926.tex}
 \subfile{\base/Informatique/Lecons/927.tex}
-\subfile{\base/Informatique/Lecons/928.tex}
+%%\subfile{\base/Informatique/Lecons/928.tex}
 
 
 
@@ -70,35 +72,171 @@
 
 
 \chapter{Développements}
-\dvt{cook}{Cook}
+\dvt{cook}{Théorème de Cook}
 Leçons :
 \begin{itemize}
-	\item[\bof] \lecref{912}
-	\item \lecref{913}
-	\item \lecref{916}
+	\vadans{913}
+	\vadans{916}
 \end{itemize}
+Wolper (et Carton)
 
-\dvt{probindalg}{Problèmes indécidables sur les langages algébriques}
-Leçons :
-\begin{itemize}
-	\item \lecref{910}
-	\item[\bof] \lecref{913}
-	\item \lecref{922}
-	\item[\bof] \lecref{923}
-\end{itemize}
+%\dvt{probindalg}{Problèmes indécidables sur les langages algébriques}
+%Leçons :
+%\begin{itemize}
+%	\vadans{910}
+%	\vadans{922}
+%\end{itemize}
 
 \dvt{tripartas}{Tri par Tas}
 Leçons :
 \begin{itemize}
-	\item \lecref{901}
-	\item \lecref{903}
+	\vadans{901}
+	\vadans{903}
+	\vadans{927}
+\end{itemize}
+Cormen
+
+Remarques :
+\begin{itemize}
+	\item $n$ pour taille du tas et $l$ pour longeueur de tableau
+Faire un dessin.
+	\item Dire que la série converge sans le justifier.
 \end{itemize}
 
 \dvt{unification}{Unification}
 Leçons :
 \begin{itemize}
-	\item \lecref{917}
-	\item \lecref{927}
+	\vadans{917}
+	\vadans{927}
+\end{itemize}
+
+\dvt{plssc}{Plus longue sous-séquence commune}
+Leçons :
+\begin{itemize}
+	\vadans{906}
+	%\vadans{907}
+\end{itemize}
+
+Cormen
+
+Remarques :
+\begin{itemize}
+	\item Lemme, relation de récurrence et algorithme (et exemple si c'est trop court).
+	\item Il faut juste changer les notations ($\widetilde{u}u_\bullet=u$)
+\end{itemize}
+
+%\dvt{plsscmemoire}{Plus longue sous-séquence commune (optimisation mémoire)}
+%Leçons :
+%\begin{itemize}
+%	\vadans{902}
+%\end{itemize}
+
+\dvt{pointslesplusproches}{Les points les plus proches}
+Leçons :
+\begin{itemize}
+	\vadans{902}
+	\vadans{921}
+\end{itemize}
+
+%\dvt{voyageur}{Problème du voyageur de commerce euclidien}
+%Leçons :
+%\begin{itemize}
+%	\vadans{}
+%	\vadans{925}
+%\end{itemize}
+
+\dvt{bellmanford}{Bellman-Ford}
+Leçons :
+\begin{itemize}
+	\vadans{906}
+	\vadans{925}
+\end{itemize}
+
+Remarques :
+\begin{itemize}
+	\item Bien différentier taille et poids d'un chemin
+	\item \emph{Le} poids minimal, \emph{un} chemin de poids minimal
+\end{itemize}
+
+\dvt{tritopologique}{Tri topologique}
+Leçons :
+\begin{itemize}
+	\vadans{903}
+	\vadans{925}
+\end{itemize}
+Cormen
+
+Remarques :
+\begin{itemize}
+	\item Parcours en profondeur avec date
+	\item intervalles de dates disjoint ou inclusion (on suppose u.d < v.d et après cas selon u.f < v.d ou non)
+	\item si (u, v) arête alors u.f > v.f (cas selon la couleur de v quand on passe par (u, v))
+	\item exemple ?
+\end{itemize}
+
+
+\dvt{abro}{Arbres binaires de recherche optimaux}
+Leçons :
+\begin{itemize}
+	\vadans{901}
+	\vadans{906}
+	\vadans{921}
+\end{itemize}
+
+\dvt{presburger}{Décidabilité de l’arithmétique de Presburger}
+Leçons :
+\begin{itemize}
+	%\vadans{909}
+	\vadans{922}
+\end{itemize}
+
+%\dvt{trifusiontrirapide}{Tri fusion / Tri rapide}
+%Leçons :
+%\begin{itemize}
+%	\vadans{902}
+%	\vadans{903}
+%\end{itemize}
+
+\dvt{calculableimpliquerecursif}{Calculable implique récursif}
+Leçons :
+\begin{itemize}
+	\vadans{912}
+	\vadans{913}
+\end{itemize}
+
+Remarques :
+\begin{itemize}
+	\item Carton pour les formules
+	\item Wolper four nom des fonctions intermédiaires et vision globale
+	\item Il faut prendre $f~:~\Sigma^* \to \Gamma^*$ et à la fin, rajouter une fonction pour transformer $(u, q, v)$ et $\varepsilon, q, v')$ pour pouvoir dire que le résultat est $v'$.
+\end{itemize}
+
+\dvt{langagesre}{Caractérisation des langages RE}
+Leçons :
+\begin{itemize}
+	\vadans{912}
+	\vadans{922}
+\end{itemize}
+
+
+\dvt{compacité}{Théorème de compacité}
+Leçons :
+\begin{itemize}
+	\vadans{916}
+\end{itemize}
+
+\dvt{fft}{FFT}
+Leçons :
+\begin{itemize}
+	\vadans{901}
+	\vadans{902}
+\end{itemize}
+
+
+\dvt{todo}{Lov-Sko scendant | prolog | completude de deduction naturelle}
+Leçons :
+\begin{itemize}
+	\vadans{921}
 \end{itemize}
 
 \chapter{Références}
@@ -106,4 +244,14 @@ Leçons :
 Livres a priori cools : \textcite{Kozen:1992:DAA:121450}
 
 \printbibliography[segment=1,resetnumbers]
+
+lassaigne rougemeont
+
+froidevaux godel soria
+
+cori lascar (1 ET 2)
+
+dehornoy
+
+informatique theorique (DEVISME, LAFOURCADE LEVY) : DPLL (et mieux pr calcul prop?)
 \end{document}

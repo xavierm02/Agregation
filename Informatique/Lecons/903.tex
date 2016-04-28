@@ -16,6 +16,22 @@ On attend également du candidat qu'il évoque la question du tri en place, des 
 Le jury ne manquera pas de demander au candidat des applications non triviales du tri.
 \end{aquote}
 
+\dvts
+
+\subsection{Références}
+
+Cormen, BBC, Papadimitriou
+
+\subsection{Plan}
+
+\begin{itemize}
+	\item Intro (tri, applications, stable, en place, [on se restreint aux entiers ?], on compte le nombre de comparaisons, borne inférieure)
+	\item Tris naïfs
+	\item Tri par tas
+	\item Diviser pour régner
+	\item Autres tris (base, paquet, dénombrement, mémoire externe ?)
+\end{itemize}
+
 \subsection{Remarques}
 
 Quand on trie, on trie par rapport à un \emph{préordre} $\preccurlyeq$. On a donc aussi une relation d'équivalence $x\approx y\coloneqq (x\preccurlyeq y) \land (x\succcurlyeq y)$ qui n'a aucune raison d'être l'égalité.
@@ -25,5 +41,7 @@ Si l'on note $\sqsubseteq$ le préordre associé au tableau donné en entrée d'
 La notion de tri \emph{stable} n'a aucun intérêt si on se restreint aux entiers muni de leur ordre habituel (ou plus généralement à un ensemble muni d'un ordre [par opposition à un préordre]) car si l'on ne peut jamais distinguer $T[i]$ de $T[j]$, s'assurer qu'ils sont restés dans le même ordre n'est pas vraiment utile.
 
 Pour trier selon $\preccurlyeq^{lex}_{\preccurlyeq_1, \preccurlyeq_2}$, on peut d'abord trier selon $\preccurlyeq_2$ et ensuite utiliser une procédure de tri stable pour trier selon $\preccurlyeq_1$ (ce qui peut être plus facile à implémenter que le tri selon $\preccurlyeq^{lex}_{\preccurlyeq_1, \preccurlyeq_2}$ et peut servir si l'on doit trier selon $\preccurlyeq^{lex}_{\preccurlyeq_1, \preccurlyeq_2}$ et $\preccurlyeq^{lex}_{\preccurlyeq_1', \preccurlyeq_2}$).
+
+Dans le tri rapide, on peut choisir la médianne en $O(n)$ comme pivot et donc atteindre un pire cas en $O(n\log n)$ mais en pratique, c'est plus lent.
 
 \end{document}

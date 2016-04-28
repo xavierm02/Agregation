@@ -9,9 +9,110 @@
 \cftsetindents{section}{0em}{3em}
 \cftsetindents{subsection}{3em}{4em}
 
-% Me
-\newcommand\lec[2]{\DIV[#1]{section}{#2}\label{lec:#1}}
+\ExplSyntaxOn
+\makeatletter
+
+\str_new:N \g_lecon%
+
+\newcommand{\lec}[2]{%
+	\str_set:Nn \g_lecon {#1}%
+	\section{#1\ - #2~(\nbdvts{#1}/2)}%
+	\label{lec:#1}%
+}%
+
 \newcommand\lecref[1]{\nameref{lec:#1}}
-\newcommand\dvt[2]{\section{#2}\label{dvt:#1}}
+
+\str_new:N \g_dvt%
+
+\newcommand{\dvt}[2]{%
+	\str_set:Nn \g_dvt {#1}%
+	\section{#2}%
+	\label{dvt:#1}%
+}%
+
 \newcommand\dvtref[1]{\nameref{dvt:#1}}
-\newcommand\dvts[2]{}
+
+\seq_new:N \g_lecons_dvts_seq%
+
+\newcommand{\DeclarerLecon}[1]{
+	\seq_if_exist:cF {g_lecon#1_dvts_seq} {%
+		\seq_new:c {g_lecon#1_dvts_seq}%
+		\seq_gput_right:Nn \g_lecons_dvts_seq {#1}%
+	}
+}
+
+\newcommand{\lierLeconDvt}[3]{%
+	\DeclarerLecon{#1}
+	\seq_gput_right:cx {g_lecon#1_dvts_seq}{#2,#3}%
+}%
+
+\newcommand{\vadans}[2][ok]{
+	\lierLeconDvt{#2}{\g_dvt}{#1}
+	\item[\smiley{#1}] \nameref{lec:#2}
+}
+
+\newcommand{\getlecon}{
+	\g_lecon
+}
+
+\seq_new:N \l_pair
+\tl_new:N \l_pair_left
+\tl_new:N \l_pair_right
+
+\newcommand{\nbdvts}[1]{
+	\seq_if_exist:NTF \g_lecons_dvts_seq_stored {%
+		\seq_count:c {g_lecon#1_dvts_seq_stored}
+	} { RECOMPILE }
+}
+
+\newcommand{\ListerDvts}[1]{
+	\subsection{Développements}
+	\seq_if_exist:NTF \g_lecons_dvts_seq_stored {%
+		\int_case:nnF { \seq_count:c {g_lecon#1_dvts_seq_stored} } {
+			{ 0 } { Aucun. }
+		} {%
+			\begin{itemize}
+			\seq_map_inline:cn {g_lecon#1_dvts_seq_stored} {%
+				\seq_set_split:Nnn \l_pair {,} {##1}%
+				\seq_pop:NN \l_pair \l_pair_left
+				\seq_pop:NN \l_pair \l_pair_right
+				\item[\smiley{\l_pair_right}] \nameref{dvt:\l_pair_left}%
+			}%
+			\end{itemize}
+		}
+	} { RECOMPILE }
+}
+
+\newcommand{\dvts}{
+	\ListerDvts{\g_lecon}
+}
+
+\newcommand{\StoreSeqs}{
+	\immediate\write\@auxout{%
+		\string\ExplSyntaxOn
+	}
+	\immediate\write\@auxout{%
+		\seq_clear_new:N \string\g_lecons_dvts_seq_stored^^J
+		\seq_gset_split:Nnn \string\g_lecons_dvts_seq_stored { | } { \seq_use:Nn \g_lecons_dvts_seq { | } }
+	}
+	\immediate\write\@auxout{%
+		\seq_clear_new:N \string\l_leconnb_dvts_seq_stored
+	}
+	\seq_map_inline:Nn \g_lecons_dvts_seq {%
+		\immediate\write\@auxout{%
+			\seq_clear_new:c {g_lecon##1_dvts_seq_stored}^^J
+			\seq_set_split:Nnn \string\l_leconnb_dvts_seq_stored { | } { \seq_use:cn {g_lecon##1_dvts_seq} { | } }^^J
+			\seq_gset_eq:cN {g_lecon##1_dvts_seq_stored} \string\l_leconnb_dvts_seq_stored
+		}
+	}
+	\immediate\write\@auxout{%
+		\string\ExplSyntaxOff
+	}
+}
+
+\makeatother
+\ExplSyntaxOff
+
+\AtEndDocument{%
+  \StoreSeqs
+}

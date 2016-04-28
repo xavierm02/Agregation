@@ -8,7 +8,7 @@
 \usepackage{amssymb}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{hyperref}
-\usepackage{xpatch}
+
 \usepackage{hyperref}
 \usepackage{cleveref}
 \usepackage{refcount}
@@ -19,6 +19,10 @@
 \usepackage[autostyle]{csquotes}
 \usepackage{marvosym}
 \usepackage{xparse}
+\usepackage{expl3}
+\usepackage{l3str}
+\usepackage{xpatch}
+\usepackage{tikzsymbols}
 \hypersetup{
     colorlinks,
     citecolor=black,
@@ -41,12 +45,43 @@
   {\savebox\mybox{#1}\begin{quote}}
   {\signed{\usebox\mybox}\end{quote}}
 
+\newcommand{\green}[1]{
+	\textcolor{OliveGreen}{#1}
+}
+
+\newcommand{\blue}[1]{
+	\textcolor{blue}{#1}
+}
+
+\newcommand{\orange}[1]{
+	\textcolor{orange}{#1}
+}
+
+\newcommand{\red}[1]{
+	\textcolor{red}{#1}
+}
+
+\newcommand{\white}[1]{
+	\textcolor{white}{#1}
+}
 
 \usepackage{pifont}
-\newcommand{\ok}{\textcolor{OliveGreen}{\ding{52}}}
-\newcommand{\todo}{\textcolor{blue}{\ding{228}}}
-\newcommand{\bof}{\textcolor{orange}{\Yingyang}}
-\newcommand{\nok}{\textcolor{red}{\ding{56}}}
+\newcommand{\ok}{\green{\ding{52}}}
+\newcommand{\todo}{\blue{\ding{228}}}
+\newcommand{\bof}{\orange{\Yingyang}}
+\newcommand{\nok}{\red{\ding{56}}}
+
+\ExplSyntaxOn
+\newcommand{\smiley}[1]{
+	\str_case:onF {#1}
+	{
+		{ok} {\colorbox{green}{\Smiley}}
+		{bof} {\colorbox{YellowOrange}{\Neutrey}}
+		{nok} {\colorbox{red}{\Sadey}}
+	}
+	{\todo #1}
+}
+\ExplSyntaxOff
 
 \providecommand{\base}{.}
 
@@ -66,7 +101,6 @@
 \title{Agrégation}
 \author{Xavier \textsc{Montillet}}
 \maketitle
-\tableofcontents
 
 \newpage
 Notations :
@@ -78,6 +112,8 @@ Notations :
 \end{itemize}
 
 \subfile{\base/Informatique/Informatique.tex}
+
+Hutt, Ryan (BDD)
 
 \part{Mathématiques}
 
