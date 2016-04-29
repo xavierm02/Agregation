@@ -16,4 +16,32 @@ Une formalisation comme la logique de Hoare pourra utilement être introduite da
 
 \dvts
 
+\subsection{Références}
+
+\begin{itemize}
+	\item Cormen
+	\item Winskel
+	\item Luc Albert
+	\item David Nour Raffali
+\end{itemize}
+
+\subsection{Plan}
+
+\begin{lstlisting}[language=caml]
+let f (x : int ref) (y : int ref) =
+  x := !x lxor !y;
+  y := !x lxor !y;
+  x := !x lxor !y
+\end{lstlisting}
+
+\begin{itemize}
+	\item Terminaison (ensemble bien fondé, itératif et récursif)
+	\item Correction (itératif et récursif)
+	\item Sémantique axiomatique
+\end{itemize}
+
+\subsection{Remarques}
+
+Aucunes.
+
 \end{document}
