@@ -1,0 +1,281 @@
+\providecommand{\base}{../..}
+\providecommand{\ifallthenelse}[2]{#2}
+\documentclass[../../agregation.tex]{subfiles}
+\begin{document}
+
+\newcommand{\algabstract}{
+	Les langages algébriques sont assez complexes pour pouvoir représenter
+la plupart des langages de programmations actuels tout en étant assez
+simples pour que certaines propriétés restent décidables. Ils ont
+de nombreuses applications en compilation.\\
+Dans cette leçon, nous présentons d'abord les représentations usuelles
+des langages algébriques et quelques-unes de leurs propriétés. Nous
+constatons ensuite que TODO
+}
+
+\ifallthenelse{
+	\lec{910}{\todo Langages algébriques. Exemples et applications.}
+	\algabstract
+}{
+	\title{Mémoire\\Langages algébriques. Exemples et applications.}
+	\author{Xavier \textsc{Montillet}}
+	\maketitle
+	\begin{abstract}\algabstract\end{abstract}
+	\newpage
+	\renewcommand\thesection{\arabic{section}}
+}
+
+\global\long\def\leftbrace#1{\left\{  #1\right.}
+
+
+\global\long\def\L{\mathcal{L}}
+
+
+\global\long\def\N{\mathbb{N}}
+
+
+\global\long\def\abs#1{\left|#1\right|}
+
+
+\global\long\def\transitionn#1#2{\overset{#1{\color{white}#2}}{\leadsto^{#2}}}
+
+\section{Représentations}
+
+
+\subsection{Grammaires algébriques}
+
+
+\subsubsection{Définition et premières propriétés} % {[}Carton, p. 75-79{]}
+
+\begin{defn}[Grammaire algébrique]
+	Une grammaire algébrique est un quadruplet $(V, \Sigma, R, S)$ où $V$ et $\Sigma$ sont des ensembles finis disjoints, $R\subseteq V\times(V\sqcup\Sigma)^*$ et $S\in V$. Les éléments de $V$ sont appelés variables ou non terminaux et ceux de $\Sigma$ sont appelés terminaux. Les éléments de $R$ sont appelés règles. Le non terminal $S$ est appelé axiome. On note $X\to u_1+\dots+u_n$ pour $(X,u_1),\dots,(X_,u_n)\in R$.
+\end{defn}
+
+\begin{example}
+	$G_{1}=\left(\Sigma_{1},\ V_{1},\ P_{1}\right)$, $A_{1}=\set{a,\ b}$,
+	$V_{1}=\set S$, $R_{1}=\set{S\to aSb,\ S\to\varepsilon}$
+\end{example}
+
+\begin{rem}
+	On se contentera souvent de donner $R$ en utilisant la convention
+	que les lettres minuscules sont des symboles terminaux et que les
+	lettres majuscules sont des symboles non terminaux.
+\end{rem}
+
+\begin{example}
+	$G_{1}=\left\{ S\to aSb+\varepsilon\right\} $, $G_{2}=\left\{ \begin{array}{c}
+	P\to aI+\varepsilon\\
+	I\to aP
+	\end{array}\right\} $
+	$$G_{3,n}=\left\{ \begin{array}{c}
+	S\to ST+\varepsilon\\
+	T\to a_{1}Sb_{1}S\ +\ \dots\ +\ a_{n}Sb_{n}S\ +\ \varepsilon
+	\end{array}\right\} $$
+\end{example}
+
+\begin{defn}[Dérivation]
+	On étend $\to$ à $(V\sqcup\Sigma)^*$ par $\alpha X \beta \to \alpha u \beta$ si $X\to u$. On note $\to^*$ la clôture réflexive transitive de $\to$. Si $u\to v$, on dit que $u$ se dérive directement en $v$.
+\end{defn}
+
+\begin{example}
+	$S\to aSb\to aaSbb\to aabb$ dans $G_{1}$
+\end{example}
+
+\begin{defn}[Langage engendré]
+	Pour tout $X\in V$, on pose $\widehat{\L_{G}}\left(u\right)\coloneqq \set{v\in (V\sqcup\Sigma)^*:u\to^* v}$ et $\L_{G}\left(u\right)\coloneqq \widehat{\L_{G}}\left(u\right)\cap \Sigma^*$. On appelle $\L_{G}\left(u\right)$ langage engendré par $u$ dans $G$. On appelle langage engendré par la grammaire et note $\L\left(G\right)$ le langage $\L_{G}\left(S\right)$ engendré par l'axiom.
+\end{defn}
+
+\begin{example}
+	$\L_{G_{1}}\left(S\right)=\set{a^{n}b^{n}\ |\ n\in\N}$, $\L_{G_{2}}\left(P\right)=\set{a^{2n}\ |\ n\in\N}$,
+	$\L_{G_{2}}\left(I\right)=\set{a^{2n+1}\ |\ n\in\N}$, $D_{n}^{*}\coloneqq\L_{G_{3,n}}\left(S\right)$
+	est appelé langage de Dyck. C'est le langage des mots bien parenthésés
+	(si l'on considère $a_{i}$ comme une parenthèse ouvrante et $b_{i}$
+	comme la parenthèse fermante correspondante).
+\end{example}
+
+\begin{defn}[Langage algébrique]
+	Un langage algébrique est un langage engendré par une grammaire algébrique.
+\end{defn}
+
+\begin{lem}[Fondamental]
+	Soit $G=(V,\Sigma,R,S)$ une grammaire algébrique et $u$ et $v$ deux mots de $(V\sqcup \Sigma)^*$. On suppose que $u$ se factorise $u=u_1u_2$. Alors il existe une dérivation $u\to^k v$ de longueur $k$ si et seulement si $v$ se factorise $v=v_1v_2$ et s'il existe deux dérivations $u_1\to^{k_1}v_1$ et $u_2\to^{k_2}v_2$ où $k=k_1+k_2$.
+\end{lem}
+
+\subsubsection{Arbres de dérivation} %{[}Carton, p. 90-94{]}
+
+\begin{defn}[Arbre de dérivation]
+	Soit $G=(V,\Sigma,R,S)$ une grammaire algébrique. Un arbre de dérivation est un arbre fini dont les noeuds sont étiquettés par $V\sqcup \Sigma \sqcup \set{\varepsilon}$ vérifiant la propriété suivante. Si $X$ est l'étiquette d'un noeud interne et $\alpha_1,\dots,\alpha_n$ sont les étiquettes de ses fils alors $S\to \alpha_1\dots\alpha_n$.
+\end{defn}
+
+\begin{defn}[Frontière]
+	La frontière d'un arbre de dérivation est le mot obtenu par concaténation des étiquettes de ses feuilles de gauche à droite.
+\end{defn}
+
+\begin{prop}
+	Pour tout non-terminal $X\in V$, le langage $\L_G(X)$ (resp. $\widehat{\L_G(X)}$) est l'ensemble des mots $u\in \Sigma^*$ (resp. $u\in (V\sqcup \Sigma)^*$) tels qu'il existe un arbre de dérivation de racine $X$ et de frontière $u$.
+\end{prop}
+
+\begin{example} Les deux arbres suivants sont des arbres de dérivation (de frontière $aaa$) de la grammaire $S\to SS + a$.
+	\Tree[.S a [.S a a ] ] \hspace{3em} \Tree[.S [.S a a ] a ]
+\end{example}
+
+\begin{defn}[Grammaire ambiguë]
+	Une grammaire $G$ est dite ambiguë s'il existe un mot ayant deux arbres de dérivation distincts dont les racines ont la même étiquette.
+\end{defn}
+
+\begin{example}
+	$S\to SS+a$ est une grammaire ambiguë.
+\end{example}
+
+\begin{rem}
+	$S\to aS+a$ est une grammaire non ambiguë générant le même langage.
+\end{rem}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Simplifications des grammaires {[}Carton, p.79-82{]}}
+\begin{defn}
+	(Grammaire réduite)
+\end{defn}
+
+\begin{defn}
+	(Grammaire propre)
+\end{defn}
+
+\begin{defn}
+	(Forme normale quadratique / de Chomsky)
+\end{defn}
+
+\begin{defn}
+	(Forme normale de Greibach) {[}Carton, p. 102{]}\end{defn}
+\begin{prop}
+	Pour toute grammaire $G$, on a : {[}Hopcroft, p. 295{]} \{Tout est
+	dans le Carton sauf les complexités\}
+	\begin{itemize}
+		\item $\L_{G}$ est engendré par une grammaire réduite de taille $O\left(\abs G\right)$
+		calculable en temps $O\left(\abs G\right)$.
+		\item $\L_{G}\setminus\set{\varepsilon}$ est engendré par une grammaire
+		propre de taille $O\left(\abs G^{2}\right)$ calculable en temps $O\left(\abs G^{2}\right)$.
+		\item $\L_{G}\setminus\set{\varepsilon}$ est engendré par une grammaire
+		en forme normale quadratique de taille $O\left(\abs G^{2}\right)$
+		calculable en temps $O\left(\abs G^{2}\right)$.
+		\item $\L_{G}\setminus\set{\varepsilon}$ est engendré par une grammaire
+		en forme normale de Greibach (quadratique).
+	\end{itemize}
+\end{prop}
+
+\subsection{Automates à pile {[}Carton, p. 104-109; 112{]}}
+\begin{defn}
+	(Automate à pile)
+\end{defn}
+
+\begin{defn}
+	(Calcul d'un automate à pile)
+\end{defn}
+
+\begin{defn}
+	(Modes d'acceptation d'un automate à pile)
+	\begin{itemize}
+		\item Pile vide
+		\item État final
+	\end{itemize}
+\end{defn}
+\begin{prop}
+	(Équivalence des modes d'acceptation)\end{prop}
+\begin{thm}
+	(Équivalence grammaires algébriques / automates à piles)\end{thm}
+\begin{defn}
+	(Automate à pile déterministe)\end{defn}
+\begin{rem}
+	Il n'y a plus équivalence des différents modes d'acceptation.
+\end{rem}
+
+\section{Propriétés}
+
+
+\subsection{Lemme d'itération {[}Carton, p. 92-95{]}}
+\begin{lem}
+	(Ogden)\end{lem}
+\begin{cor}
+	(Théorème de Bar-Hillel, Perles et Shamir)\end{cor}
+\begin{claim}
+	Le langage $\set{a^{n}b^{n}c^{n}\ |\ n\in\N}$ n'est pas algébrique
+	(par BHS).\end{claim}
+\begin{example}
+	Ce langage pourrait représenter de la mise en forme en mode texte.
+	
+	\begin{lstlisting}
+	+-------+
+	| titre |
+	+-------+
+	\end{lstlisting}
+	
+\end{example}
+
+\begin{example}
+	{[}Application{]} Le langage $\set{a^{m}b^{n}c^{m}d^{n}\ |\ n,m\in\N}$
+	n'est pas algébrique (par Ogden, BHS ne suffit pas).
+	
+	Ce langage pourrait représenter le fait qu'on a déclaré deux procédures
+	à $m$ et $n$ arguments et qu'on les a ensuite utilisées. {[}Dragon,
+	p. 179{]}
+\end{example}
+
+\subsection{Propriétés de clôture {[}TODO{]}}
+\begin{defn}
+	Morphisme
+\end{defn}
+
+\begin{defn}
+	Substitution (algébrique)\end{defn}
+\begin{prop}
+	L'ensemble des langages algébrique est clos par \{voir figure \ref{fig:clot}\}.
+\end{prop}
+
+\subsection{Théorème de Chomsky et Schützenberger {[}Carton, p. 100-101{]}}
+\begin{thm}
+	(Chomsky et Schützenberger)\end{thm}
+\begin{lem}
+	Il existe un morphisme $\psi:\ A_{n}^{*}\to A_{2}^{*}$ tel que $D_{n}^{*}=\psi^{-1}\left(D_{2}^{*}\right)$.\end{lem}
+\begin{cor}
+	Tout langage algébrique s'écrit $\varphi\left(\psi^{-1}\left(D_{2}^{*}\cap K\right)\right)$
+	pour des morphismes $\varphi$ et $\psi$ et un langage rationnel
+	$K$.\end{cor}
+\begin{rem}
+	Une fonction $X\mapsto\varphi\left(\psi^{-1}\left(X\cap K\right)\right)$
+	s'appelle une \emph{transduction rationnelle}. Ce sont des transformations
+	très naturelles qui peuvent être réalisées avec des automates à deux
+	bandes (une pour l'entrée et une pour la sortie).
+\end{rem}
+
+\subsection{X - Théorème de Parikh {[}Carton, p. 86{]}}
+\begin{defn}
+	(Anagrammes)
+\end{defn}
+
+\begin{defn}
+	(Image commutative)\end{defn}
+\begin{thm}
+	(Parikh)
+\end{thm}
+
+
+\ifallthenelse{
+	\dvts
+}{}
+
+\end{document}

@@ -1,0 +1,17 @@
+% http://tex.stackexchange.com/a/110900/82912
+
+\newsavebox{\leftbox} \newsavebox{\rightbox}%
+
+\NewDocumentCommand{\lrboxbrace}{s O{\{} O{\}} O{0.05\linewidth} +m O{0.8\linewidth} +m}{% \lrboxbrace[<lbrace>][<rbrace>][<lwidth>]{<ltext>}[<rwidth>]{<rtext>}
+  \begin{lrbox}{\leftbox}% Left box
+    \IfBooleanTF{#1}% starred/unstarred
+      {\begin{varwidth}{#4}#5\end{varwidth}}
+      {\begin{minipage}{#4}#5\end{minipage}}
+  \end{lrbox}
+  \begin{lrbox}{\rightbox}% Right box
+    \IfBooleanTF{#1}% starred/unstarred
+      {\begin{varwidth}{#6}#7\end{varwidth}}
+      {\begin{minipage}{#6}#7\end{minipage}}
+  \end{lrbox}
+  \ensuremath{\usebox\leftbox\left#2\,\usebox\rightbox\,\right#3}
+}

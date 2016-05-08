@@ -1,13 +1,15 @@
-\documentclass[10pt,a4paper]{report}
+\documentclass[10pt,a4paper,notitlepage]{report}
 \RequirePackage[l2tabu, orthodox]{nag}
 \usepackage[utf8]{inputenc}
 \usepackage[francais]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{qtree}
 \usepackage{amssymb}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{hyperref}
+\usepackage{braket}
 
 \usepackage{hyperref}
 \usepackage{cleveref}
@@ -40,6 +42,9 @@
 \def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
   \hbox{}\nobreak\hfil(#1)%
   \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+
+
 
 \newsavebox\mybox
 \newenvironment{aquote}[1]
@@ -85,6 +90,7 @@
 \ExplSyntaxOff
 
 \providecommand{\base}{.}
+\providecommand{\ifallthenelse}[2]{#1}
 
 \usepackage[backend=bibtex,style=numeric]{biblatex}
 \bibliography{\base/includes/bib.bib}
@@ -92,11 +98,12 @@
 
 
 \input{\base/includes/lec_dvt.tex}
+\input{\base/includes/boxes.tex}
+\input{\base/includes/thms.tex}
 
 \AtEveryCitekey{%
   \clearfield{url}%
 }
-
 \begin{document}
 
 \title{Agrégation}
@@ -112,9 +119,13 @@ Notations :
 	\item[\nok] pas ok
 \end{itemize}
 
-\subfile{\base/Informatique/Informatique.tex}
+\subfile{\base/informatique/informatique.tex}
 
 Hutt, Ryan (BDD)
+
+\subsection{Mémoire}
+
+\subfile{\base/informatique/memoire/memoire.tex}
 
 \part{Mathématiques}
 
