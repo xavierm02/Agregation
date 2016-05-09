@@ -21,6 +21,8 @@ constatons ensuite que TODO
 	\author{Xavier \textsc{Montillet}}
 	\maketitle
 	\begin{abstract}\algabstract\end{abstract}
+	\setcounter{tocdepth}{3}
+	\tableofcontents
 	\newpage
 	\renewcommand\thesection{\arabic{section}}
 }
@@ -29,6 +31,8 @@ constatons ensuite que TODO
 
 
 \global\long\def\L{\mathcal{L}}
+
+\global\long\def\A{\mathcal{A}}
 
 
 \global\long\def\N{\mathbb{N}}
@@ -39,6 +43,7 @@ constatons ensuite que TODO
 
 \global\long\def\transitionn#1#2{\overset{#1{\color{white}#2}}{\leadsto^{#2}}}
 
+
 \section{Représentations}
 
 
@@ -48,11 +53,11 @@ constatons ensuite que TODO
 \subsubsection{Définition et premières propriétés} % {[}Carton, p. 75-79{]}
 
 \begin{defn}[Grammaire algébrique]
-	Une grammaire algébrique est un quadruplet $(V, \Sigma, R, S)$ où $V$ et $\Sigma$ sont des ensembles finis disjoints, $R\subseteq V\times(V\sqcup\Sigma)^*$ et $S\in V$. Les éléments de $V$ sont appelés variables ou non terminaux et ceux de $\Sigma$ sont appelés terminaux. Les éléments de $R$ sont appelés règles. Le non terminal $S$ est appelé axiome. On note $X\to u_1+\dots+u_n$ pour $(X,u_1),\dots,(X_,u_n)\in R$.
+	Une grammaire algébrique est un quadruplet $(\Sigma, V, R, S)$ où $\Sigma$ et $V$ sont des ensembles finis disjoints, $R\subseteq V\times(V\sqcup\Sigma)^*$ et $S\in V$. Les éléments de $\Sigma$ sont appelés terminaux et ceux de $V$ sont appelés variables ou non terminaux. Les éléments de $R$ sont appelés règles. Le non terminal $S$ est appelé axiome. On note $X\to u_1+\dots+u_n$ pour $(X,u_1),\dots,(X_,u_n)\in R$.
 \end{defn}
 
 \begin{example}
-	$G_{1}=\left(\Sigma_{1},\ V_{1},\ P_{1}\right)$, $A_{1}=\set{a,\ b}$,
+	$G_{1}=\left(\Sigma_{1},\ V_{1},\ R_{1}\right)$, $\Sigma_{1}=\set{a,\ b}$,
 	$V_{1}=\set S$, $R_{1}=\set{S\to aSb,\ S\to\varepsilon}$
 \end{example}
 
@@ -97,112 +102,106 @@ constatons ensuite que TODO
 	Un langage algébrique est un langage engendré par une grammaire algébrique.
 \end{defn}
 
+\begin{prop}
+	Tout langage rationnel est algébrique et l'inclusion
+	est stricte.
+\end{prop}
+
 \begin{lem}[Fondamental]
-	Soit $G=(V,\Sigma,R,S)$ une grammaire algébrique et $u$ et $v$ deux mots de $(V\sqcup \Sigma)^*$. On suppose que $u$ se factorise $u=u_1u_2$. Alors il existe une dérivation $u\to^k v$ de longueur $k$ si et seulement si $v$ se factorise $v=v_1v_2$ et s'il existe deux dérivations $u_1\to^{k_1}v_1$ et $u_2\to^{k_2}v_2$ où $k=k_1+k_2$.
+	Soit $G=(\Sigma,V,R,S)$ une grammaire algébrique et $u$ et $v$ deux mots de $(V\sqcup \Sigma)^*$. On suppose que $u$ se factorise $u=u_1u_2$. Alors il existe une dérivation $u\to^k v$ de longueur $k$ si et seulement si $v$ se factorise $v=v_1v_2$ et s'il existe deux dérivations $u_1\to^{k_1}v_1$ et $u_2\to^{k_2}v_2$ où $k=k_1+k_2$.
 \end{lem}
 
-\subsubsection{Arbres de dérivation} %{[}Carton, p. 90-94{]}
-
-\begin{defn}[Arbre de dérivation]
-	Soit $G=(V,\Sigma,R,S)$ une grammaire algébrique. Un arbre de dérivation est un arbre fini dont les noeuds sont étiquettés par $V\sqcup \Sigma \sqcup \set{\varepsilon}$ vérifiant la propriété suivante. Si $X$ est l'étiquette d'un noeud interne et $\alpha_1,\dots,\alpha_n$ sont les étiquettes de ses fils alors $S\to \alpha_1\dots\alpha_n$.
-\end{defn}
-
-\begin{defn}[Frontière]
-	La frontière d'un arbre de dérivation est le mot obtenu par concaténation des étiquettes de ses feuilles de gauche à droite.
-\end{defn}
-
-\begin{prop}
-	Pour tout non-terminal $X\in V$, le langage $\L_G(X)$ (resp. $\widehat{\L_G(X)}$) est l'ensemble des mots $u\in \Sigma^*$ (resp. $u\in (V\sqcup \Sigma)^*$) tels qu'il existe un arbre de dérivation de racine $X$ et de frontière $u$.
-\end{prop}
-
-\begin{example} Les deux arbres suivants sont des arbres de dérivation (de frontière $aaa$) de la grammaire $S\to SS + a$.
-	\Tree[.S a [.S a a ] ] \hspace{3em} \Tree[.S [.S a a ] a ]
-\end{example}
-
-\begin{defn}[Grammaire ambiguë]
-	Une grammaire $G$ est dite ambiguë s'il existe un mot ayant deux arbres de dérivation distincts dont les racines ont la même étiquette.
-\end{defn}
-
-\begin{example}
-	$S\to SS+a$ est une grammaire ambiguë.
-\end{example}
-
-\begin{rem}
-	$S\to aS+a$ est une grammaire non ambiguë générant le même langage.
-\end{rem}
 
 
+\subsubsection{Simplifications des grammaires} %{[}Carton, p.79-82{]}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\subsubsection{Simplifications des grammaires {[}Carton, p.79-82{]}}
-\begin{defn}
-	(Grammaire réduite)
-\end{defn}
-
-\begin{defn}
-	(Grammaire propre)
-\end{defn}
-
-\begin{defn}
-	(Forme normale quadratique / de Chomsky)
-\end{defn}
-
-\begin{defn}
-	(Forme normale de Greibach) {[}Carton, p. 102{]}\end{defn}
-\begin{prop}
-	Pour toute grammaire $G$, on a : {[}Hopcroft, p. 295{]} \{Tout est
-	dans le Carton sauf les complexités\}
+\begin{defn}[Grammaire réduite]
+	Une grammaire $G=(\Sigma,V,R,S)$ est dite \emph{réduite} si
 	\begin{itemize}
-		\item $\L_{G}$ est engendré par une grammaire réduite de taille $O\left(\abs G\right)$
-		calculable en temps $O\left(\abs G\right)$.
-		\item $\L_{G}\setminus\set{\varepsilon}$ est engendré par une grammaire
-		propre de taille $O\left(\abs G^{2}\right)$ calculable en temps $O\left(\abs G^{2}\right)$.
-		\item $\L_{G}\setminus\set{\varepsilon}$ est engendré par une grammaire
-		en forme normale quadratique de taille $O\left(\abs G^{2}\right)$
-		calculable en temps $O\left(\abs G^{2}\right)$.
-		\item $\L_{G}\setminus\set{\varepsilon}$ est engendré par une grammaire
-		en forme normale de Greibach (quadratique).
-	\end{itemize}
-\end{prop}
-
-\subsection{Automates à pile {[}Carton, p. 104-109; 112{]}}
-\begin{defn}
-	(Automate à pile)
-\end{defn}
-
-\begin{defn}
-	(Calcul d'un automate à pile)
-\end{defn}
-
-\begin{defn}
-	(Modes d'acceptation d'un automate à pile)
-	\begin{itemize}
-		\item Pile vide
-		\item État final
+		\item pour tout $X\in V$, $\L_G(X)\not=\emptyset$,
+		\item pour tout $X\in V$, il existe $u,v\in(\Sigma\sqcup V)^*$ tels que $S\to^*uXv$.
 	\end{itemize}
 \end{defn}
-\begin{prop}
-	(Équivalence des modes d'acceptation)\end{prop}
-\begin{thm}
-	(Équivalence grammaires algébriques / automates à piles)\end{thm}
-\begin{defn}
-	(Automate à pile déterministe)\end{defn}
-\begin{rem}
-	Il n'y a plus équivalence des différents modes d'acceptation.
-\end{rem}
+
+\begin{prop}[Grammaire réduite]
+	Pour toute grammaire algébrique $G$, $\L_{G}$ est engendré par une grammaire réduite de taille $O\left(\abs G\right)$
+	calculable en temps $O\left(\abs G\right)$.
+\end{prop}
+
+\begin{defn}[Grammaire propre]
+	Une grammaire $G=(\Sigma,V,R,S)$ est dite \emph{propre} si elle ne contient aucune règle de la forme $X\to \varepsilon$ ou de la forme $X\to Y$ pour $X,Y\in V$.
+\end{defn}
+
+\begin{prop}[Grammaire propre]
+	Pour toute grammaire algébrique $G$, $\L_{G}\setminus\set{\varepsilon}$ est engendré par une grammaire
+	propre de taille $O\left(\abs G^{2}\right)$ calculable en temps $O\left(\abs G^{2}\right)$.
+\end{prop}
+
+\begin{defn}[Forme normale quadratique / de Chomsky]
+	Une grammaire $G=(\Sigma,V,R,S)$ est dite en \emph{forme normale quadratique} si toutes ses règles sont de la forme $X\to YZ$ ou $X\to a$ où $X,Y,Z\in V$ et $a\in\Sigma$.
+\end{defn}
+
+\begin{prop}[Forme normale quadratique / de Chomsky]
+	Pour toute grammaire algébrique $G$, $\L_{G}\setminus\set{\varepsilon}$ est engendré par une grammaire
+	en forme normale quadratique de taille $O\left(\abs G^{2}\right)$
+	calculable en temps $O\left(\abs G^{2}\right)$.
+\end{prop}
+
+%\begin{defn}
+%	(Forme normale de Greibach) {[}Carton, p. 102{]}\end{defn}
+%{[}Hopcroft, p. 295{]} \{Tout est
+% dans le Carton sauf les complexités\}
+%\begin{prop}
+%		\item $\L_{G}\setminus\set{\varepsilon}$ est engendré par une grammaire
+%		en forme normale de Greibach (quadratique).
+%	\end{itemize}
+%\end{prop}
+
+\subsection{Automates à pile} % {[}Carton, p. 104-109; 112{]}
+
+\begin{defn}[Automate à pile]
+	Un \emph{automate à pile} est un septuplet $\A=(Q,\Sigma, \Gamma, \Delta, q_0, \gamma_0, F)$ où $Q$ est un ensemble fini d'états, $\Sigma$ est l'alphabet d'entrée, $\Gamma$ est l'alphabet de pile, $\Delta\subseteq\left(Q\times (\Sigma\sqcup \{\varepsilon\})\times (\Gamma \sqcup \{\varepsilon\})\right)\times\left( Q\times \Gamma^*\right)$ décrit les transitions, $q_0$ est l'état initial, $\gamma_0$ est le symbole de pile initial et $F\subseteq Q\times\Gamma^*$ est l'ensemble des configurations acceptantes (qui sont d'une forme particulière décrite plus bas). On note $(q, \gamma)\overset{u}{\rightarrowtail} (q', \alpha)$ pour $((q,u,\gamma),(q',\alpha))\in \Delta$.
+\end{defn}
+
+\begin{defn}[Calcul d'un automate à pile]
+	On appelle configuration un élément de $Q\times\Gamma^*$. Une \emph{étape de calcul} est une paire de configurations $(C,C')$ telles que $C=(q,\gamma\beta)$, $C'=(q',\alpha\beta)$ et $(q, \gamma)\overset{u}{\rightarrowtail} (q', \alpha)$. Un \emph{calcul} est une suite d'étapes de calcul consécutives $C_0\transitionn{u_1}{}C_1\transitionn{u_2}{}\dots \transitionn{u_n}{}C_n$. Le mot $u_1\dots u_n$ est l'étiquette du calcul.
+\end{defn}
+
+\begin{defn}[Modes d'acceptation d'un automate à pile]
+	Il existe plusieurs modes d'acceptation pour définir $F$.
+	\begin{itemize}
+		\item Pile vide : $(q,\alpha)\in F \iff \alpha = \varepsilon$.
+		\item État final : $(q,\alpha)\in F \iff q\in Q_F$ où $Q_F\subseteq Q$ est un ensemble d'états dits finaux.
+	\end{itemize}
+\end{defn}
+
+\begin{defn}[Langage accepté]
+	Un mot $u$ est accepté par un automate $\A$ à pile s'il existe un calcul $(q_0,\gamma_0)\transitionn{u}{*}C$ de la configuration initiale $(q_0,\gamma_0)$ à une configuration finale $C\in F$. Le langage $\L(\A)$ accepté par un automate $\A$ est l'ensemble des mots qu'il accepte.
+\end{defn}
+
+\begin{prop}[Équivalence des modes d'acceptation]
+	Les différents modes d'acceptation sont équivalents dans la mesure où ils permettent tous d'accepter exactement les mêmes langages.	
+\end{prop}
+
+\begin{thm}[Équivalence grammaires algébriques / automates à piles]
+	Un langage $L\subseteq\Sigma^*$ est engendré par une grammaire algébrique si et seulement si il est accepté par un automate à pile.	
+\end{thm}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Propriétés}
 
@@ -273,6 +272,136 @@ constatons ensuite que TODO
 	(Parikh)
 \end{thm}
 
+
+\begin{defn}
+	(Automate à pile déterministe)\end{defn}
+\begin{rem}
+	Il n'y a plus équivalence des différents modes d'acceptation.
+\end{rem}
+
+
+\section{Problèmes de décision}
+
+\subsection{Problèmes décidables}
+\begin{thm}
+	La vacuité d'un langage algébrique (représenté par une grammaire $G$)
+	est décidable en temps $O\left(\abs G\right)$.
+\end{thm}
+
+\begin{thm}
+	L'appartenance d'un mot $u$ à un langage algébrique (représenté par
+	une grammaire) est décidable en temps $O\left(\abs G\abs u^{3}\right)$.
+	{[}Hopcroft, p. 298. La complexité en |G| vient de Wikipedia mais
+	on peut s'en convaincre en lisant l'algo{]}\end{thm}
+\begin{rem}
+	La forme normale quadratique donne un algorithme exponentiel en $\abs u$
+	car on peut borner la longueur d'une dérivation et donc tester toutes
+	les dérivations possibles.\\
+	
+\end{rem}
+Floyd, p.321, Earley (descendante)???
+
+problemes decidables : (L et L' det) L=R, R $\subseteq L$ {[}carton,
+juste pares les trucs indecidables{]}, L rat, L=L' {[}Hopc., p.246{]}
+
+
+\subsection{Problèmes indécidables}
+\begin{prop}
+	Les problèmes suivants sont indécidable : {[}Carton, p. 154{]} {[}DEV,
+	Admet PCP indécidable{]}
+	\begin{itemize}
+		\item Pour deux grammaires, l'intersection des langages engendrés est-elle
+		vide ?
+		\item Pour deux grammaires, les langages engendrés sont-ils égaux ?
+		\item Pour une grammaire, engendre-t-elle le langage de tous les mots sur
+		l'alphabet ?
+		\item Pour une grammaire, est-elle ambiguë ?
+	\end{itemize}
+\end{prop}
+
+\section{Application à la compilation}
+
+\subsection{Arbres de dérivation et ambiguïté} %{[}Carton, p. 90-94{]}
+
+\begin{defn}[Arbre de dérivation]
+	Soit $G=(\Sigma,V,R,S)$ une grammaire algébrique. Un arbre de dérivation est un arbre fini dont les noeuds sont étiquettés par $V\sqcup \Sigma \sqcup \set{\varepsilon}$ vérifiant la propriété suivante. Si $X$ est l'étiquette d'un noeud interne et $\alpha_1,\dots,\alpha_n$ sont les étiquettes de ses fils alors $S\to \alpha_1\dots\alpha_n$.
+\end{defn}
+
+\begin{defn}[Frontière]
+	La frontière d'un arbre de dérivation est le mot obtenu par concaténation des étiquettes de ses feuilles de gauche à droite.
+\end{defn}
+
+\begin{prop}
+	Pour tout non-terminal $X\in V$, le langage $\L_G(X)$ (resp. $\widehat{\L_G(X)}$) est l'ensemble des mots $u\in \Sigma^*$ (resp. $u\in (V\sqcup \Sigma)^*$) tels qu'il existe un arbre de dérivation de racine $X$ et de frontière $u$.
+\end{prop}
+
+\begin{example} Les deux arbres suivants sont des arbres de dérivation (de frontière $aaa$) de la grammaire $S\to SS + a$.
+	\Tree[.S [.S a ] [.S [.S a ] [.S a ] ] ] \hspace{3em} \Tree[.S [.S [.S a ] [.S a ] ] [.S a ] ]
+\end{example}
+
+\begin{defn}[Grammaire ambiguë]
+	Une grammaire $G$ est dite ambiguë s'il existe un mot ayant deux arbres de dérivation distincts dont les racines ont la même étiquette.
+\end{defn}
+
+\begin{example}
+	$S\to SS+a$ est une grammaire ambiguë.
+\end{example}
+
+\begin{rem}
+	$S\to aS+a$ est une grammaire non ambiguë générant le même langage.
+\end{rem}
+
+\begin{defn}
+	(Langage ambigu) {[}Carton, p. 91{]}
+\end{defn}
+
+\begin{prop}
+	Tout langage algébrique déterministe est non ambigu {[}Carton, p.
+	115{]} et l'inclusion est stricte {[}Carton, p. 115{]}.
+\end{prop}
+
+\begin{prop}
+	L'inclusion des langages non ambigus dans les langages algébriques
+	est stricte. {[}Carton, p. 95{]}
+\end{prop}
+
+\begin{prop}
+	L'ensemble des langages non ambigus est clos par \{voir figure \ref{fig:clot}\}.
+\end{prop}
+
+\subsection{Langages déterministes {[}Carton, p. 113{]}}
+\begin{defn}
+	(Langage algébrique déterministe)\end{defn}
+\begin{prop}
+	Tout langage rationnel est algébrique déterministe et l'inclusion
+	est stricte.
+\end{prop}
+
+\begin{prop}
+	L'ensemble des langages algébriques déterministes est stable par \{voir
+	figure \ref{fig:clot}\}.\end{prop}
+\begin{defn}
+	(Langage déterministe préfixe) {[}Autebert , p. 127{]}
+\end{defn}
+
+\begin{defn}
+	(Langage préfixe) {[}Ca doit etre dans le Autebert mais j'ai pas trouvé{]}\end{defn}
+\begin{rem}
+	Si $L$ est un langage quelconque et $\$$ n'apparaît pas dans $L$,
+	alors $L\$$ est un langage préfixe.\end{rem}
+\begin{prop}
+	Un langage est déterministe préfixe ssi il est déterministe et préfixe.
+	{[}Autebert, p. 127{]}
+\end{prop}
+
+\begin{prop}
+	L'inclusion des langages déterministes préfixes dans les langages
+	déterministes est stricte.
+\end{prop}
+
+\subsection{LL(k)}
+
+\subsection{LR(k)}
 
 \ifallthenelse{
 	\dvts
