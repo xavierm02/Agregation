@@ -43,6 +43,20 @@ constatons ensuite que TODO
 
 \global\long\def\transitionn#1#2{\overset{#1{\color{white}#2}}{\leadsto^{#2}}}
 
+\global\long\def\L{\mathcal{L}}
+
+
+\global\long\def\It{\operatorname{It}}
+
+
+\global\long\def\transition#1{\overset{#1}{\leadsto}}
+
+
+\global\long\def\hist#1{\operatorname{hist}\left(#1\right)}
+
+
+\global\long\def\intint#1#2{\left\llbracket #1,\ #2\right\rrbracket }
+
 
 \section{Représentations}
 
@@ -50,7 +64,7 @@ constatons ensuite que TODO
 \subsection{Grammaires algébriques}
 
 
-\subsubsection{Définition et premières propriétés} % {[}Carton, p. 75-79{]}
+%\subsubsection{Définition et premières propriétés} % {[}Carton, p. 75-79{]}
 
 \begin{defn}[Grammaire algébrique]
 	Une grammaire algébrique est un quadruplet $(\Sigma, V, R, S)$ où $\Sigma$ et $V$ sont des ensembles finis disjoints, $R\subseteq V\times(V\sqcup\Sigma)^*$ et $S\in V$. Les éléments de $\Sigma$ sont appelés terminaux et ceux de $V$ sont appelés variables ou non terminaux. Les éléments de $R$ sont appelés règles. Le non terminal $S$ est appelé axiome. On note $X\to u_1+\dots+u_n$ pour $(X,u_1),\dots,(X_,u_n)\in R$.
@@ -102,18 +116,13 @@ constatons ensuite que TODO
 	Un langage algébrique est un langage engendré par une grammaire algébrique.
 \end{defn}
 
-\begin{prop}
-	Tout langage rationnel est algébrique et l'inclusion
-	est stricte.
-\end{prop}
-
 \begin{lem}[Fondamental]
 	Soit $G=(\Sigma,V,R,S)$ une grammaire algébrique et $u$ et $v$ deux mots de $(V\sqcup \Sigma)^*$. On suppose que $u$ se factorise $u=u_1u_2$. Alors il existe une dérivation $u\to^k v$ de longueur $k$ si et seulement si $v$ se factorise $v=v_1v_2$ et s'il existe deux dérivations $u_1\to^{k_1}v_1$ et $u_2\to^{k_2}v_2$ où $k=k_1+k_2$.
 \end{lem}
 
 
 
-\subsubsection{Simplifications des grammaires} %{[}Carton, p.79-82{]}
+%\subsubsection{Simplifications des grammaires} %{[}Carton, p.79-82{]}
 
 \begin{defn}[Grammaire réduite]
 	Une grammaire $G=(\Sigma,V,R,S)$ est dite \emph{réduite} si
@@ -187,73 +196,92 @@ constatons ensuite que TODO
 	Un langage $L\subseteq\Sigma^*$ est engendré par une grammaire algébrique si et seulement si il est accepté par un automate à pile.	
 \end{thm}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 \section{Propriétés}
 
+\subsection{Lemme d'itération} % {[}Carton, p. 92-95{]}
 
-\subsection{Lemme d'itération {[}Carton, p. 92-95{]}}
-\begin{lem}
-	(Ogden)\end{lem}
-\begin{cor}
-	(Théorème de Bar-Hillel, Perles et Shamir)\end{cor}
-\begin{claim}
-	Le langage $\set{a^{n}b^{n}c^{n}\ |\ n\in\N}$ n'est pas algébrique
-	(par BHS).\end{claim}
+\begin{lem}[Ogden]\label{th:ogden}
+	Pour tout grammaire $G=(\Sigma,V,R,S)$ et toute variable $X\in V$, il existe un entier $K$ tel que tout mot $f\in \widehat{\L_G(X)}$ ayant au moins $K$ lettres distinguées se factorise en $f=\alpha u \beta v \gamma$, où $\alpha,u,\beta,v,\gamma\in (\Sigma\sqcup V)^*$, avec
+	\begin{itemize}
+		\item $S\to^*\alpha T \gamma$ et $T\to ^*uTv+\beta$
+		\item soit $\alpha, u, \beta$, soit $\beta, v, \gamma$ conteinnent des lettres distinguées.
+		\item $u\beta v$ contient moins de $K$ lettres distinguées.
+	\end{itemize}
+\end{lem}
+
+\begin{cor}[Théorème de Bar-Hillel, Perles et Shamir]\label{th:bhs}
+	Pour tout langage algébrique $L$, il existe $N\ge 0$ tel que pour tout mot $f\in L$, si $\abs{f}\ge N$ alors on peut trouver une factorisation $f=\alpha u \beta v \gamma$ telle que $\abs{uv}>0$, $\abs{u\beta v}<N$ et $\alpha u^n \beta v^n \gamma\in L$ pour tout $n\ge 0$.	
+\end{cor}
+
+\begin{application}[de \ref{th:bhs}]
+	Le langage $\set{a^{n}b^{n}c^{n}\ |\ n\in\N}$ n'est pas algébrique.
+\end{application}
+
 \begin{example}
-	Ce langage pourrait représenter de la mise en forme en mode texte.
-	
-	\begin{lstlisting}
+	Ce langage pourrait représenter de la mise en forme en mode texte. \begin{lstlisting}
 	+-------+
 	| titre |
 	+-------+
 	\end{lstlisting}
-	
 \end{example}
 
-\begin{example}
-	{[}Application{]} Le langage $\set{a^{m}b^{n}c^{m}d^{n}\ |\ n,m\in\N}$
-	n'est pas algébrique (par Ogden, BHS ne suffit pas).
+\begin{application}[de \ref{th:ogden}]
+	Le langage $\set{a^{m}b^{n}c^{m}d^{n}\ |\ n,m\in\N}$ n'est pas algébrique.
 	
 	Ce langage pourrait représenter le fait qu'on a déclaré deux procédures
-	à $m$ et $n$ arguments et qu'on les a ensuite utilisées. {[}Dragon,
-	p. 179{]}
-\end{example}
+	à $m$ et $n$ arguments et qu'on les a ensuite utilisées. % {[}Dragon,p. 179{]}
+\end{application}
 
-\subsection{Propriétés de clôture {[}TODO{]}}
-\begin{defn}
-	Morphisme
-\end{defn}
+\subsection{Propriétés de clôture}
 
-\begin{defn}
-	Substitution (algébrique)\end{defn}
-\begin{prop}
-	L'ensemble des langages algébrique est clos par \{voir figure \ref{fig:clot}\}.
+\begin{prop}[Opérations rationnelles]
+	L'ensemble des langages algébrique est clos par union, concaténation et étoile.
 \end{prop}
 
-\subsection{Théorème de Chomsky et Schützenberger {[}Carton, p. 100-101{]}}
-\begin{thm}
-	(Chomsky et Schützenberger)\end{thm}
+\begin{prop}
+	Tout langage rationnel est algébrique et l'inclusion est stricte.
+\end{prop}
+
+\begin{prop}
+	L'ensemble des langages algébrique est clos par intersection avec un rationnel mais ni par complémentation, ni par intersection.
+\end{prop}
+
+\begin{defn}[Morphisme]
+	Un morphisme de $X^*$ dans $Y^*$ est une fonction $\varphi:X^*\to Y^*$ telle que $\varphi(\varepsilon) = \varepsilon$ et $\varphi(uv)=\varphi(u)\varphi(v)$ pour tous $u,v\in X ^*$. L'image de $L\subseteq X^*$ par $\varphi$ est $\set{f(u) : u \in L}$ et l'image inverse de $L'\subseteq Y^*$ par $\varphi$ est $\set{u \in X^* : \varphi(u) \in L'}$.
+\end{defn}
+
+\begin{prop}
+	L'ensemble des langages algébrique est clos par morphisme et morphisme inverse.
+\end{prop}
+
+\begin{defn}[Substitution algébrique]
+	Une substitution algébrique est une fonction $\sigma:X^*\to \mathcal{P}(Y^*)$ telle que $\sigma(\varepsilon)=\set{\varepsilon}$, $\sigma(uv)=\sigma(u)\sigma(v)$ pour tous $u,v\in X ^*$, et pour tout $a\in X$, $\sigma(a)$ est algébrique. L'image de $L\subseteq X^*$ par $\sigma$ est $\underset{u\in L}{\bigcup}\sigma(u)$.
+\end{defn}
+
+\begin{prop}
+	L'ensemble des langages algébrique est clos par substitution algébrique.
+\end{prop}
+
+\subsection{Théorème de Chomsky et Schützenberger} % {[}Carton, p. 100-101{]}
+
+\begin{defn}[Morphisme alphabétique]
+	Un morphisme $\varphi:X^*\to Y^*$ est dit alphabétique si pour tout $u\in X^*$, $\abs{\varphi(u)} \le 1$.
+\end{defn}
+
+\begin{thm}[Chomsky et Schützenberger]
+	Un langage $L$ est algébrique si et seulement si $L=\varphi(D^*_n\cap K)$ pour un entier $n$, un langage rationnel $K$ et un morphisme alphabétique $\varphi$.
+\end{thm}
+
 \begin{lem}
-	Il existe un morphisme $\psi:\ A_{n}^{*}\to A_{2}^{*}$ tel que $D_{n}^{*}=\psi^{-1}\left(D_{2}^{*}\right)$.\end{lem}
+	Pour tout $n \ge 0$, il existe un morphisme $\psi:\ A_{n}^{*}\to A_{2}^{*}$ tel que $D_{n}^{*}=\psi^{-1}\left(D_{2}^{*}\right)$.
+\end{lem}
+
 \begin{cor}
 	Tout langage algébrique s'écrit $\varphi\left(\psi^{-1}\left(D_{2}^{*}\cap K\right)\right)$
 	pour des morphismes $\varphi$ et $\psi$ et un langage rationnel
-	$K$.\end{cor}
+	$K$.
+\end{cor}
+
 \begin{rem}
 	Une fonction $X\mapsto\varphi\left(\psi^{-1}\left(X\cap K\right)\right)$
 	s'appelle une \emph{transduction rationnelle}. Ce sont des transformations
@@ -261,23 +289,19 @@ constatons ensuite que TODO
 	bandes (une pour l'entrée et une pour la sortie).
 \end{rem}
 
-\subsection{X - Théorème de Parikh {[}Carton, p. 86{]}}
-\begin{defn}
-	(Anagrammes)
-\end{defn}
+%\subsection{X - Théorème de Parikh {[}Carton, p. 86{]}}
+%\begin{defn}
+%	(Anagrammes)
+%\end{defn}
+%
+%\begin{defn}
+%	(Image commutative)\end{defn}
+%\begin{thm}
+%	(Parikh)
+%\end{thm}
 
-\begin{defn}
-	(Image commutative)\end{defn}
-\begin{thm}
-	(Parikh)
-\end{thm}
 
 
-\begin{defn}
-	(Automate à pile déterministe)\end{defn}
-\begin{rem}
-	Il n'y a plus équivalence des différents modes d'acceptation.
-\end{rem}
 
 
 \section{Problèmes de décision}
@@ -370,6 +394,12 @@ juste pares les trucs indecidables{]}, L rat, L=L' {[}Hopc., p.246{]}
 \end{prop}
 
 \subsection{Langages déterministes {[}Carton, p. 113{]}}
+
+\begin{defn}
+	(Automate à pile déterministe)\end{defn}
+\begin{rem}
+	Il n'y a plus équivalence des différents modes d'acceptation.
+\end{rem}
 \begin{defn}
 	(Langage algébrique déterministe)\end{defn}
 \begin{prop}
@@ -399,9 +429,146 @@ juste pares les trucs indecidables{]}, L rat, L=L' {[}Hopc., p.246{]}
 	déterministes est stricte.
 \end{prop}
 
+\subsection{Automate des items}
+
+Soit une grammaire $G=\left(\Sigma,\ V,\ P\right)$ et $S\in V$ à
+laquelle on ajoute une nouvelle variable $S'$ et une nouvelle règle
+$S'\to S$.
+
+À $A\to\alpha\beta\in P$, on associe $\left[A\to\alpha\bullet\beta\right]$
+que l'on appelle un item. On note $\It$ l'ensemble des items associés
+à $G$.
+
+Intuition : $\left[A\to\alpha\bullet\beta\right]$ représente le fait
+que l'on cherche à reconnaître $u\in\Sigma^{*}$ tel que $A\to^{*}\alpha\beta\to^{*}u$.
+Par le lemme fondamental, on a donc $v,w\in\Sigma^{*}$ tel que $u=vw$,
+$\alpha\to^{*}v$ et $\beta\to^{*}w$. La position de $\bullet$ indique
+que l'on a déjà lu $v$ et que l'on veut maintenant lire $w$.
+\begin{defn}[Automate des items]
+	
+	L'automate des items $A_{G}$ associé à $G$ (et $S$) est l'automate
+	à pile (généralisé\footnote{On s'autorise à lire plusieurs symboles sur la pile pour faire une transition. On peut émuler ce comportement avec un automate à pile normal qui retient des symboles lus dans ses états.}) à un seul état dont l'alphabet de pile est $\It$,
+	qui commence avec une pile contenant $\left[S'\to\bullet S\right]$,
+	dont la pile \og acceptrice \fg{} est $\left[S'\to S\bullet\right]$,
+	et dont les transitions sont toutes celles de la forme (où l'état
+	est omis car l'automate n'a qu'un état) :
+	\begin{itemize}
+		\item[$(E)$]  \og Expansion \fg{} : $\left[X\to\alpha\bullet B\gamma\right]\overset{\varepsilon}{\rightarrowtail}\left[X\to\alpha\bullet B\gamma\right]\left[B\to\bullet\beta\right]$
+		\item[$(L)$]  \og Lecture \fg{} : $\left[X\to\alpha\bullet b\gamma\right]\overset{b}{\rightarrowtail}\left[X\to\alpha b\bullet\gamma\right]$
+		\item[$(R)$]  \og Réduction \fg{} : $\left[X\to\alpha\bullet B\gamma\right]\left[B\to\beta\bullet\right]\overset{\varepsilon}{\rightarrowtail}\left[X\to\alpha B\bullet\gamma\right]$ 
+	\end{itemize}
+\end{defn}
+
+\begin{defn}[Histoire]
+	
+	L'histoire d'une suite d'items (qui peut apparaître dans la pile)
+	$\rho=\left[X_{1}\to\alpha_{1}\bullet\beta_{1}\right]\dots\left[X_{n}\to\alpha_{n}\bullet\beta_{n}\right]$
+	est $\hist{\rho}\coloneqq\alpha_{1}\dots\alpha_{n}$ (qui représente
+	ce qui a déjà été lu).\end{defn}
+\begin{lem}
+	Si $\left[S'\to\bullet S\right]\transitionn u*\rho$ alors $\hist{\rho}\to^{*}u$.\label{lem:hist}\end{lem}
+\begin{proof}
+	On le prouve par récurrence sur la longueur du calcul dans l'automate.
+	\begin{itemize}
+		\item Pour un calcul $\left[S'\to\bullet S\right]\transitionn u0\rho$ de
+		longueur $0$, on a $u=\varepsilon$ et $\rho=\left[S'\to\bullet S\right]$
+		et donc $\hist{\rho}=\varepsilon\to^{*}\varepsilon=u$.
+		\item Pour un calcul $\left[S'\to\bullet S\right]\transitionn u{n+1}\rho$
+		de longueur $n+1$, on a $\rho'$ tel que $\left[S'\to\bullet S\right]\transitionn vn\rho'\transitionn w1\rho$
+		avec $u=vw$. Par récurrence, $\hist{\rho'}\to^{*}v$. On a trois
+		cas suivant si $\rho'\transition w\rho$ est une transition $(E)$,
+		$(L)$ ou $(R)$ :
+		
+		\begin{itemize}
+			\item[$(E)$]  $\rho=\rho'\left[B\to\bullet\beta\right]$ et $w=\varepsilon$ donc
+			\[
+			\hist{\rho}=\hist{\rho'\left[B\to\bullet\beta\right]}=\hist{\rho'}\to^{*}v=u
+			\]
+			
+			\item[$(L)$]  $\rho'=\rho''\left[X\to\alpha\bullet b\gamma\right]$, $\rho=\rho''\left[X\to\alpha b\bullet\gamma\right]$
+			et $w=b$ donc
+			\[
+			\hist{\rho}=\hist{\rho''\left[X\to\alpha b\bullet\gamma\right]}=\hist{\rho''}\alpha b=\hist{\rho'}b\to^{*}vb=u
+			\]
+			
+			\item[$(R)$]  $\rho'=\rho''\left[X\to\alpha\bullet B\gamma\right]\left[B\to\beta\bullet\right]$,
+			$\rho=\rho''\left[X\to\alpha B\bullet\gamma\right]$ et $w=\varepsilon$
+			donc
+			\[
+			\hist{\rho''}\alpha\beta=\hist{\rho'}\to^{*}v
+			\]
+			Or comme $\left[B\to\beta\bullet\right]\in\It$, on a aussi $B\to\beta\in P$.
+			D'où
+			\[
+			\hist{\rho}=\hist{\rho''}\alpha B\to\hist{\rho''}\alpha\beta\to^{*}v=u
+			\]
+			
+		\end{itemize}
+	\end{itemize}
+\end{proof}
+\begin{lem}
+	Pour tout $n\ge1$, $A\in V$ et $u\in\Sigma^{*}$, si $A\to^{n}u$
+	alors il existe $A\to\alpha\in P$ tel que $\left[A\to\bullet\alpha\right]\transitionn u*\left[A\to\alpha\bullet\right]$.\label{lem:regle}\end{lem}
+\begin{proof}
+	On le prouve par récurrence forte sur $n$.\end{proof}
+\begin{itemize}
+	\item Pour une dérivation de longueur $1$, $A\to^{1}u$ donc $A\to u\in P$.
+	On en déduit (en notant $a_{1},\ \dots,\ a_{k}$ les lettres de $u$)
+	\[
+	\left[A\to\bullet u\right]=\left[A\to\bullet a_{1}a_{2}\dots a_{k}\right]\underset{(L)}{\transition{a_{1}}}\left[A\to a_{1}\bullet a_{2}\dots a_{k}\right]\underset{(L)}{\transition{a_{2}}}\dots\underset{(L)}{\transition{a_{k}}}\left[A\to a_{1}a_{2}\dots a_{k}\bullet\right]=\left[A\to u\bullet\right]
+	\]
+	Et donc $\left[A\to\bullet u\right]\transitionn u*\left[A\to u\bullet\right]$.
+	\item Pour une dérivation de longueur $n+1$, on a $A\to^{1}\alpha\to^{n}u$.
+	On note $\alpha_{1},\ \dots,\ \alpha_{k}$ les lettres de $\alpha$.
+	Par le lemme fondamental, on a $u_{1},\ \dots,\ u_{k}\in\Sigma^{*}$
+	tel que pour chaque $i\in\intint 1k$, $\alpha_{i}\to^{n_{i}}u_{i}$
+	avec ${\displaystyle \sum_{i=1}^{k}}n_{i}=n$. En particulier, pour
+	chaque $i\in\intint 1k$, $n_{i}\le n$. Pour chaque $i\in\intint 1k$,
+	il y a deux cas :
+	
+	\begin{itemize}
+		\item $\alpha_{i}\in\Sigma$ et alors $\left[A\to\alpha_{1}\dots\alpha_{i-1}\bullet\alpha_{i}\alpha_{i+1}\dots\alpha_{k}\right]\underset{(L)}{\transition{\alpha_{i}}}\left[A\to\alpha_{1}\dots\alpha_{i-1}\alpha_{i}\bullet\alpha_{i+1}\dots\alpha_{k}\right]$
+		\item $\alpha_{i}\in V$ et alors, par récurrence, on a $\alpha_{i}\to\beta\in P$
+		tel que $\left[\alpha_{i}\to\bullet\beta\right]\transitionn{u_{i}}*\left[\alpha_{i}\to\beta\bullet\right]$.
+		On a donc
+		\begin{align*}
+		\left[A\to\alpha_{1}\dots\alpha_{i-1}\bullet\alpha_{i}\alpha_{i+1}\dots\alpha_{k}\right]\underset{(E)}{\transition{\varepsilon}}\left[A\to\alpha_{1}\dots\alpha_{i-1}\bullet\alpha_{i}\alpha_{i+1}\dots\alpha_{k}\right]\left[\alpha_{i}\to\bullet\beta\right]\\
+		\transitionn{u_{i}}*\left[A\to\alpha_{1}\dots\alpha_{i-1}\bullet\alpha_{i}\alpha_{i+1}\dots\alpha_{k}\right]\left[\alpha_{i}\to\beta\bullet\right]\underset{(R)}{\transition{\varepsilon}}\left[A\to\alpha_{1}\dots\alpha_{i-1}\alpha_{i}\bullet\alpha_{i+1}\dots\alpha_{k}\right]
+		\end{align*}
+		En combinant les exécutions on obtient
+		\[
+		\left[A\to\bullet\alpha_{1}\alpha_{2}\dots\alpha_{k}\right]\transitionn{u_{1}}*\left[A\to\alpha_{1}\bullet\alpha_{2}\dots\alpha_{k}\right]\transitionn{u_{2}}*\dots\transitionn{u_{n}}*\left[A\to\alpha_{1}\alpha_{2}\dots\alpha_{k}\bullet\right]
+		\]
+		\\
+		Et donc on a bien $\left[A\to\bullet\alpha\right]\transitionn u*\left[A\to\alpha\bullet\right]$,
+		c'est-à-dire $A\to\alpha\in P$ convient.
+	\end{itemize}
+\end{itemize}
+\begin{thm}
+	$\L\left(A_{G}\right)=\L\left(G\right)$
+\end{thm}
+\begin{proof}On prouve les deux inclusions.
+	\begin{itemize}
+		\item[\og $\subseteq$ \fg{}]  Soit $u\in\L\left(A_{G}\right)$. Par définition de $\L\left(A_{G}\right)$,
+		$\left[S'\to\bullet S\right]\transitionn u0\left[S'\to S\bullet\right]$.
+		Par le lemme \ref{lem:hist}, on a donc $S=\hist{\left[S'\to S\bullet\right]}\to^{*}u$,
+		c'est-à-dire $u\in\L\left(G\right)$.
+		\item[\og $\supseteq$ \fg{}]  Soit $u\in\L\left(G\right)$. Par définition de $\L\left(G\right)$,
+		on a $S'\to^{*}u$. Par le lemme \ref{lem:regle}, on a donc $S'\to\alpha\in P$
+		tel que $\left[S'\to\bullet\alpha\right]\transitionn u*\left[S'\to\alpha\bullet\right]$.
+		Or la seule règle de la forme $S'\to\alpha$ est $S'\to S$. On a
+		donc $\left[S'\to\bullet S\right]\transitionn u*\left[S'\to S\bullet\right]$,
+		c'est-à-dire $u\in\L\left(A_{G}\right)$.
+	\end{itemize}
+\end{proof}
+
 \subsection{LL(k)}
 
 \subsection{LR(k)}
+
+refs
+
+Reinhard Wilhelm, Dieter Maurer, Compiler design, p. 281-282
 
 \ifallthenelse{
 	\dvts
