@@ -10,7 +10,7 @@ simples pour que certaines propriétés restent décidables. Ils ont
 de nombreuses applications en compilation.\\
 Dans cette leçon, nous présentons d'abord les représentations usuelles
 des langages algébriques et quelques-unes de leurs propriétés. Nous
-constatons ensuite que TODO
+nous intéressons ensuite aux problèmes de décision sur les langages algébriques. Enfin, nous décrivons leurs applications à la compilation et certaines sous-classes utiles dans ce cadre.
 }
 
 \ifallthenelse{
@@ -60,14 +60,14 @@ constatons ensuite que TODO
 
 \section{Représentations}
 
+Dans cette section, nous donnons deux définitions équivalentes des langages algébriques : une par des grammaires et une par des automates.
 
 \subsection{Grammaires algébriques}
-
 
 %\subsubsection{Définition et premières propriétés} % {[}Carton, p. 75-79{]}
 
 \begin{defn}[Grammaire algébrique]
-	Une grammaire algébrique est un quadruplet $(\Sigma, V, R, S)$ où $\Sigma$ et $V$ sont des ensembles finis disjoints, $R\subseteq V\times(V\sqcup\Sigma)^*$ et $S\in V$. Les éléments de $\Sigma$ sont appelés terminaux et ceux de $V$ sont appelés variables ou non terminaux. Les éléments de $R$ sont appelés règles. Le non terminal $S$ est appelé axiome. On note $X\to u_1+\dots+u_n$ pour $(X,u_1),\dots,(X_,u_n)\in R$.
+	Une \emph{grammaire algébrique} est un quadruplet $(\Sigma, V, R, S)$ où $\Sigma$ et $V$ sont des ensembles finis disjoints, $R\subseteq V\times(V\sqcup\Sigma)^*$ et $S\in V$. Les éléments de $\Sigma$ sont appelés \emph{terminaux} et ceux de $V$ sont appelés \emph{variables} ou \emph{non terminaux}. Les éléments de $R$ sont appelés \emph{règles}. Le non terminal $S$ est appelé \emph{axiome}. On note $X\to u_1+\dots+u_n$ pour $(X,u_1),\dots,(X_,u_n)\in R$.
 \end{defn}
 
 \begin{example}
@@ -93,7 +93,7 @@ constatons ensuite que TODO
 \end{example}
 
 \begin{defn}[Dérivation]
-	On étend $\to$ à $(V\sqcup\Sigma)^*$ par $\alpha X \beta \to \alpha u \beta$ si $X\to u$. On note $\to^*$ la clôture réflexive transitive de $\to$. Si $u\to v$, on dit que $u$ se dérive directement en $v$.
+	On étend $\to$ à $(V\sqcup\Sigma)^*$ par $\alpha X \beta \to \alpha u \beta$ si $X\to u$. On note $\to^*$ la clôture réflexive transitive de $\to$. Si $u\to v$, on dit que $u$ se \emph{dérive directement} en $v$.
 \end{defn}
 
 \begin{example}
@@ -101,19 +101,19 @@ constatons ensuite que TODO
 \end{example}
 
 \begin{defn}[Langage engendré]
-	Pour tout $X\in V$, on pose $\widehat{\L_{G}}\left(u\right)\coloneqq \set{v\in (V\sqcup\Sigma)^*:u\to^* v}$ et $\L_{G}\left(u\right)\coloneqq \widehat{\L_{G}}\left(u\right)\cap \Sigma^*$. On appelle $\L_{G}\left(u\right)$ langage engendré par $u$ dans $G$. On appelle langage engendré par la grammaire et note $\L\left(G\right)$ le langage $\L_{G}\left(S\right)$ engendré par l'axiom.
+	Pour tout $X\in V$, on pose $\widehat{\L_{G}}\left(u\right)\coloneqq \set{v\in (V\sqcup\Sigma)^*:u\to^* v}$ et $\L_{G}\left(u\right)\coloneqq \widehat{\L_{G}}\left(u\right)\cap \Sigma^*$. On appelle $\L_{G}\left(u\right)$ \emph{langage engendré} par $u$ dans $G$. On appelle \emph{langage engendré} par la grammaire et note $\L\left(G\right)$ le langage $\L_{G}\left(S\right)$ engendré par l'axiom.
 \end{defn}
 
 \begin{example}
 	$\L_{G_{1}}\left(S\right)=\set{a^{n}b^{n}\ |\ n\in\N}$, $\L_{G_{2}}\left(P\right)=\set{a^{2n}\ |\ n\in\N}$,
 	$\L_{G_{2}}\left(I\right)=\set{a^{2n+1}\ |\ n\in\N}$, $D_{n}^{*}\coloneqq\L_{G_{3,n}}\left(S\right)$
-	est appelé langage de Dyck. C'est le langage des mots bien parenthésés
+	est appelé \emph{langage de Dyck}\label{dyck}. C'est le langage des mots bien parenthésés
 	(si l'on considère $a_{i}$ comme une parenthèse ouvrante et $b_{i}$
 	comme la parenthèse fermante correspondante).
 \end{example}
 
 \begin{defn}[Langage algébrique]
-	Un langage algébrique est un langage engendré par une grammaire algébrique.
+	Un \emph{langage algébrique} est un langage engendré par une grammaire algébrique.
 \end{defn}
 
 \begin{lem}[Fondamental]
@@ -169,15 +169,15 @@ constatons ensuite que TODO
 \subsection{Automates à pile} % {[}Carton, p. 104-109; 112{]}
 
 \begin{defn}[Automate à pile]
-	Un \emph{automate à pile} est un septuplet $\A=(Q,\Sigma, \Gamma, \Delta, q_0, \gamma_0, F)$ où $Q$ est un ensemble fini d'états, $\Sigma$ est l'alphabet d'entrée, $\Gamma$ est l'alphabet de pile, $\Delta\subseteq\left(Q\times (\Sigma\sqcup \{\varepsilon\})\times (\Gamma \sqcup \{\varepsilon\})\right)\times\left( Q\times \Gamma^*\right)$ décrit les transitions, $q_0$ est l'état initial, $\gamma_0$ est le symbole de pile initial et $F\subseteq Q\times\Gamma^*$ est l'ensemble des configurations acceptantes (qui sont d'une forme particulière décrite plus bas). On note $(q, \gamma)\overset{u}{\rightarrowtail} (q', \alpha)$ pour $((q,u,\gamma),(q',\alpha))\in \Delta$.
+	Un \emph{automate à pile} est un septuplet $\A=(Q,\Sigma, \Gamma, \Delta, q_0, \gamma_0, F)$ où $Q$ est un ensemble fini d'états, $\Sigma$ est l'\emph{alphabet d'entrée}, $\Gamma$ est l'\emph{alphabet de pile}, $\Delta\subseteq\left(Q\times (\Sigma\sqcup \{\varepsilon\})\times (\Gamma \sqcup \{\varepsilon\})\right)\times\left( Q\times \Gamma^*\right)$ décrit les transitions, $q_0$ est l'\emph{état initial}, $\gamma_0$ est le \emph{symbole de pile initial} et $F\subseteq Q\times\Gamma^*$ est l'ensemble des \emph{configurations acceptantes} (qui sont d'une forme particulière décrite plus bas). On note $(q, \gamma)\overset{u}{\rightarrowtail} (q', \alpha)$ pour $((q,u,\gamma),(q',\alpha))\in \Delta$.
 \end{defn}
 
 \begin{defn}[Calcul d'un automate à pile]
-	On appelle configuration un élément de $Q\times\Gamma^*$. Une \emph{étape de calcul} est une paire de configurations $(C,C')$ telles que $C=(q,\gamma\beta)$, $C'=(q',\alpha\beta)$ et $(q, \gamma)\overset{u}{\rightarrowtail} (q', \alpha)$. Un \emph{calcul} est une suite d'étapes de calcul consécutives $C_0\transitionn{u_1}{}C_1\transitionn{u_2}{}\dots \transitionn{u_n}{}C_n$. Le mot $u_1\dots u_n$ est l'étiquette du calcul.
+	On appelle \emph{configuration} un élément de $Q\times\Gamma^*$. Une \emph{étape de calcul} est une paire de configurations $(C,C')$ telles que $C=(q,\gamma\beta)$, $C'=(q',\alpha\beta)$ et $(q, \gamma)\overset{u}{\rightarrowtail} (q', \alpha)$. On la note $C\transition{u}C'$. Un \emph{calcul} est une suite d'étapes de calcul consécutives $C_0\transition{u_1}C_1\transition{u_2}\dots \transition{u_n}C_n$. Le mot $u_1\dots u_n$ est l'\emph{étiquette} du calcul.
 \end{defn}
 
 \begin{defn}[Modes d'acceptation d'un automate à pile]
-	Il existe plusieurs modes d'acceptation pour définir $F$.
+	Il existe plusieurs \emph{modes d'acceptation} pour définir $F$.
 	\begin{itemize}
 		\item Pile vide : $(q,\alpha)\in F \iff \alpha = \varepsilon$.
 		\item État final : $(q,\alpha)\in F \iff q\in Q_F$ où $Q_F\subseteq Q$ est un ensemble d'états dits finaux.
@@ -185,20 +185,22 @@ constatons ensuite que TODO
 \end{defn}
 
 \begin{defn}[Langage accepté]
-	Un mot $u$ est accepté par un automate $\A$ à pile s'il existe un calcul $(q_0,\gamma_0)\transitionn{u}{*}C$ de la configuration initiale $(q_0,\gamma_0)$ à une configuration finale $C\in F$. Le langage $\L(\A)$ accepté par un automate $\A$ est l'ensemble des mots qu'il accepte.
+	Un mot $u$ est \emph{accepté} par un automate $\A$ à pile s'il existe un calcul $(q_0,\gamma_0)\transitionn{u}{*}C$ de la configuration initiale $(q_0,\gamma_0)$ à une configuration finale $C\in F$. Le langage $\L(\A)$ \emph{accepté} par un automate $\A$ est l'ensemble des mots qu'il accepte.
 \end{defn}
 
 \begin{prop}[Équivalence des modes d'acceptation]
 	Les différents modes d'acceptation sont équivalents dans la mesure où ils permettent tous d'accepter exactement les mêmes langages.	
 \end{prop}
 
-\begin{thm}[Équivalence grammaires algébriques / automates à piles]
+\begin{thm}[Équivalence grammaires algébriques / automates à piles]\label{th:equiv}
 	Un langage $L\subseteq\Sigma^*$ est engendré par une grammaire algébrique si et seulement si il est accepté par un automate à pile.	
 \end{thm}
 
 \section{Propriétés}
 
 \subsection{Lemme d'itération} % {[}Carton, p. 92-95{]}
+
+Dans cette sous-section, nous nous intéressons à l'équivalent du lemme de l'étoile pour les langages algébriques : le lemme d'Ogden. Il permet, entre autres, de démontrer que certains langages ne sont pas algébriques.
 
 \begin{lem}[Ogden]\label{th:ogden}
 	Pour tout grammaire $G=(\Sigma,V,R,S)$ et toute variable $X\in V$, il existe un entier $K$ tel que tout mot $f\in \widehat{\L_G(X)}$ ayant au moins $K$ lettres distinguées se factorise en $f=\alpha u \beta v \gamma$, où $\alpha,u,\beta,v,\gamma\in (\Sigma\sqcup V)^*$, avec
@@ -234,6 +236,8 @@ constatons ensuite que TODO
 
 \subsection{Propriétés de clôture}
 
+Dans cette sous-section, nous nous intéressons aux propriétés de clôture des langages algébriques qui permettent de construire des langages algébriques à partir d'autres langages algébriques (a priori plus simples).
+
 \begin{prop}[Opérations rationnelles]
 	L'ensemble des langages algébrique est clos par union, concaténation et étoile.
 \end{prop}
@@ -247,7 +251,7 @@ constatons ensuite que TODO
 \end{prop}
 
 \begin{defn}[Morphisme]
-	Un morphisme de $X^*$ dans $Y^*$ est une fonction $\varphi:X^*\to Y^*$ telle que $\varphi(\varepsilon) = \varepsilon$ et $\varphi(uv)=\varphi(u)\varphi(v)$ pour tous $u,v\in X ^*$. L'image de $L\subseteq X^*$ par $\varphi$ est $\set{f(u) : u \in L}$ et l'image inverse de $L'\subseteq Y^*$ par $\varphi$ est $\set{u \in X^* : \varphi(u) \in L'}$.
+	Un \emph{morphisme} de $X^*$ dans $Y^*$ est une fonction $\varphi:X^*\to Y^*$ telle que $\varphi(\varepsilon) = \varepsilon$ et $\varphi(uv)=\varphi(u)\varphi(v)$ pour tous $u,v\in X ^*$. L'\emph{image} de $L\subseteq X^*$ par $\varphi$ est $\set{f(u) : u \in L}$ et l'\emph{image inverse} de $L'\subseteq Y^*$ par $\varphi$ est $\set{u \in X^* : \varphi(u) \in L'}$.
 \end{defn}
 
 \begin{prop}
@@ -255,7 +259,7 @@ constatons ensuite que TODO
 \end{prop}
 
 \begin{defn}[Substitution algébrique]
-	Une substitution algébrique est une fonction $\sigma:X^*\to \mathcal{P}(Y^*)$ telle que $\sigma(\varepsilon)=\set{\varepsilon}$, $\sigma(uv)=\sigma(u)\sigma(v)$ pour tous $u,v\in X ^*$, et pour tout $a\in X$, $\sigma(a)$ est algébrique. L'image de $L\subseteq X^*$ par $\sigma$ est $\underset{u\in L}{\bigcup}\sigma(u)$.
+	Une \emph{substitution algébrique} est une fonction $\sigma:X^*\to \mathcal{P}(Y^*)$ telle que $\sigma(\varepsilon)=\set{\varepsilon}$, $\sigma(uv)=\sigma(u)\sigma(v)$ pour tous $u,v\in X ^*$, et pour tout $a\in X$, $\sigma(a)$ est algébrique. L'\emph{image} de $L\subseteq X^*$ par $\sigma$ est $\underset{u\in L}{\bigcup}\sigma(u)$.
 \end{defn}
 
 \begin{prop}
@@ -264,8 +268,10 @@ constatons ensuite que TODO
 
 \subsection{Théorème de Chomsky et Schützenberger} % {[}Carton, p. 100-101{]}
 
+Nous avons vu à l'exemple \ref{dyck} que les langages de Dyck sont algébriques. Le théorème de Chomsky et Schützenberger affirme, en un certain sens, que les langages de Dyck contiennent l'essence des langages algébriques.
+
 \begin{defn}[Morphisme alphabétique]
-	Un morphisme $\varphi:X^*\to Y^*$ est dit alphabétique si pour tout $u\in X^*$, $\abs{\varphi(u)} \le 1$.
+	Un morphisme $\varphi:X^*\to Y^*$ est dit \emph{alphabétique} si pour tout $u\in X^*$, $\abs{\varphi(u)} \le 1$.
 \end{defn}
 
 \begin{thm}[Chomsky et Schützenberger]
@@ -304,7 +310,7 @@ constatons ensuite que TODO
 
 
 
-\section{Problèmes de décision}
+\section{Problèmes de décision (TODO)}
 
 \subsection{Problèmes décidables}
 \begin{thm}
@@ -330,8 +336,8 @@ juste pares les trucs indecidables{]}, L rat, L=L' {[}Hopc., p.246{]}
 
 
 \subsection{Problèmes indécidables}
-\begin{prop}
-	Les problèmes suivants sont indécidable : {[}Carton, p. 154{]} {[}DEV,
+\begin{prop}[Développement 1, partie 1/2]
+	Les problèmes suivants sont indécidable : {[}Carton, p. 154{]} {[}DEV, partie 1/2,
 	Admet PCP indécidable{]}
 	\begin{itemize}
 		\item Pour deux grammaires, l'intersection des langages engendrés est-elle
@@ -339,7 +345,6 @@ juste pares les trucs indecidables{]}, L rat, L=L' {[}Hopc., p.246{]}
 		\item Pour deux grammaires, les langages engendrés sont-ils égaux ?
 		\item Pour une grammaire, engendre-t-elle le langage de tous les mots sur
 		l'alphabet ?
-		\item Pour une grammaire, est-elle ambiguë ?
 	\end{itemize}
 \end{prop}
 
@@ -347,12 +352,14 @@ juste pares les trucs indecidables{]}, L rat, L=L' {[}Hopc., p.246{]}
 
 \subsection{Arbres de dérivation et ambiguïté} %{[}Carton, p. 90-94{]}
 
+Lors de la compilation, on cherche à donner une structure d'arbre à un programme (c'est-à-dire un mot du langage de programmation). Il est donc naturel de s'assurer que pour chaque mot, un tel arbre est unique. Les langages vérifiant cette propriété sont dits non ambigus.
+
 \begin{defn}[Arbre de dérivation]
-	Soit $G=(\Sigma,V,R,S)$ une grammaire algébrique. Un arbre de dérivation est un arbre fini dont les noeuds sont étiquettés par $V\sqcup \Sigma \sqcup \set{\varepsilon}$ vérifiant la propriété suivante. Si $X$ est l'étiquette d'un noeud interne et $\alpha_1,\dots,\alpha_n$ sont les étiquettes de ses fils alors $S\to \alpha_1\dots\alpha_n$.
+	Soit $G=(\Sigma,V,R,S)$ une grammaire algébrique. Un \emph{arbre de dérivation} est un arbre fini dont les noeuds sont étiquettés par $V\sqcup \Sigma \sqcup \set{\varepsilon}$ vérifiant la propriété suivante. Si $X$ est l'étiquette d'un noeud interne et $\alpha_1,\dots,\alpha_n$ sont les étiquettes de ses fils alors $S\to \alpha_1\dots\alpha_n$.
 \end{defn}
 
 \begin{defn}[Frontière]
-	La frontière d'un arbre de dérivation est le mot obtenu par concaténation des étiquettes de ses feuilles de gauche à droite.
+	La \emph{frontière} d'un arbre de dérivation est le mot obtenu par concaténation des étiquettes de ses feuilles de gauche à droite.
 \end{defn}
 
 \begin{prop}
@@ -364,39 +371,42 @@ juste pares les trucs indecidables{]}, L rat, L=L' {[}Hopc., p.246{]}
 \end{example}
 
 \begin{defn}[Grammaire ambiguë]
-	Une grammaire $G$ est dite ambiguë s'il existe un mot ayant deux arbres de dérivation distincts dont les racines ont la même étiquette.
+	Une grammaire algébrique $G$ est dite \emph{ambiguë} s'il existe un mot ayant deux arbres de dérivation distincts dont les racines ont la même étiquette.
 \end{defn}
 
 \begin{example}
-	$S\to SS+a$ est une grammaire ambiguë.
+	$S\to SS+a$ est une grammaire algébrique ambiguë.
 \end{example}
 
 \begin{rem}
-	$S\to aS+a$ est une grammaire non ambiguë générant le même langage.
+	$S\to aS+a$ est une grammaire algébrique non ambiguë générant le même langage.
 \end{rem}
 
-\begin{defn}
-	(Langage ambigu) {[}Carton, p. 91{]}
+\begin{prop}[Développement 1, partie 2/2]
+	L'ambiguïté d'une grammaire algébrique est indécidable.
+\end{prop}
+
+\begin{defn}[Langage ambigu] %{[}Carton, p. 91{]}
+	Un langage algébrique est dit \emph{non ambigu} s'il existe une grammaire algébrique non ambiguë qui l'engendre et \emph{inhéremment ambigu} si toute grammaire algébrique qui l'engendre est ambiguë.
 \end{defn}
 
 \begin{prop}
-	Tout langage algébrique déterministe est non ambigu {[}Carton, p.
-	115{]} et l'inclusion est stricte {[}Carton, p. 115{]}.
+	L'ensemble des langages algébriques non ambigus est clos par union disjointe, par intersection avec un rationnel et par morphisme inverse mais ni par union, ni par morphisme, ni par substitution. % TODO le reste?
 \end{prop}
 
-\begin{prop}
-	L'inclusion des langages non ambigus dans les langages algébriques
-	est stricte. {[}Carton, p. 95{]}
+\begin{prop} %  {[}Carton, p. 95{]}
+	L'inclusion des langages non ambigus dans les langages algébriques est stricte.
 \end{prop}
 
-\begin{prop}
-	L'ensemble des langages non ambigus est clos par \{voir figure \ref{fig:clot}\}.
-\end{prop}
+\subsection{Langages déterministes {[}Carton, p. 113{]} (TODO)}
 
-\subsection{Langages déterministes {[}Carton, p. 113{]}}
-
-\begin{defn}
-	(Automate à pile déterministe)\end{defn}
+\begin{defn}[Automate à pile déterministe]
+	Un automate à pile $\A=(Q,\Sigma, \Gamma, \Delta, q_0, \gamma_0, F)$ est \emph{déterministe} si pour toute configuration $C$,
+	\begin{itemize}
+		\item soit il existe une unique transition sortante $C\overset{\varepsilon}{\rightarrowtail}C'$,
+		\item soit il n'existe par de transition sortante étiquetée par $\varepsilon$ et pour toute $a\in \Sigma$, il existe au plus une transition sortante de la forme $C\overset{a}{\rightarrowtail}C'$.
+	\end{itemize}
+\end{defn}
 \begin{rem}
 	Il n'y a plus équivalence des différents modes d'acceptation.
 \end{rem}
@@ -429,15 +439,24 @@ juste pares les trucs indecidables{]}, L rat, L=L' {[}Hopc., p.246{]}
 	déterministes est stricte.
 \end{prop}
 
+\begin{prop}
+	Tout langage algébrique déterministe est non ambigu {[}Carton, p.
+	115{]} et l'inclusion est stricte {[}Carton, p. 115{]}.
+\end{prop}
+
 \subsection{Automate des items}
 
-Soit une grammaire $G=\left(\Sigma,\ V,\ P\right)$ et $S\in V$ à
+L'automate des items associé à une grammaire algébrique accepte le langage engendré par la grammaire, et peut donc permettre de montrer un sens de l'équivalence \ref{th:equiv}. Il permet également de décrire et motiver les analyseurs LL et LR décrits dans les sous-section suivantes.
+
+Soit une grammaire algébrique $G=\left(\Sigma,\ V,\ R, S\right)$ à
 laquelle on ajoute une nouvelle variable $S'$ et une nouvelle règle
 $S'\to S$.
 
-À $A\to\alpha\beta\in P$, on associe $\left[A\to\alpha\bullet\beta\right]$
-que l'on appelle un item. On note $\It$ l'ensemble des items associés
+\begin{defn}[Item]
+À $A\to\alpha\beta\in R$, on associe $\left[A\to\alpha\bullet\beta\right]$
+que l'on appelle un \emph{item}. On note $\It$ l'ensemble des items associés
 à $G$.
+\end{defn}
 
 Intuition : $\left[A\to\alpha\bullet\beta\right]$ représente le fait
 que l'on cherche à reconnaître $u\in\Sigma^{*}$ tel que $A\to^{*}\alpha\beta\to^{*}u$.
@@ -465,7 +484,7 @@ que l'on a déjà lu $v$ et que l'on veut maintenant lire $w$.
 	$\rho=\left[X_{1}\to\alpha_{1}\bullet\beta_{1}\right]\dots\left[X_{n}\to\alpha_{n}\bullet\beta_{n}\right]$
 	est $\hist{\rho}\coloneqq\alpha_{1}\dots\alpha_{n}$ (qui représente
 	ce qui a déjà été lu).\end{defn}
-\begin{lem}
+\begin{lem}[Développement 2, partie 1/3]
 	Si $\left[S'\to\bullet S\right]\transitionn u*\rho$ alors $\hist{\rho}\to^{*}u$.\label{lem:hist}\end{lem}
 \begin{proof}
 	On le prouve par récurrence sur la longueur du calcul dans l'automate.
@@ -497,7 +516,7 @@ que l'on a déjà lu $v$ et que l'on veut maintenant lire $w$.
 			\[
 			\hist{\rho''}\alpha\beta=\hist{\rho'}\to^{*}v
 			\]
-			Or comme $\left[B\to\beta\bullet\right]\in\It$, on a aussi $B\to\beta\in P$.
+			Or comme $\left[B\to\beta\bullet\right]\in\It$, on a aussi $B\to\beta\in R$.
 			D'où
 			\[
 			\hist{\rho}=\hist{\rho''}\alpha B\to\hist{\rho''}\alpha\beta\to^{*}v=u
@@ -506,13 +525,13 @@ que l'on a déjà lu $v$ et que l'on veut maintenant lire $w$.
 		\end{itemize}
 	\end{itemize}
 \end{proof}
-\begin{lem}
+\begin{lem}[Développement 2, partie 2/3]
 	Pour tout $n\ge1$, $A\in V$ et $u\in\Sigma^{*}$, si $A\to^{n}u$
-	alors il existe $A\to\alpha\in P$ tel que $\left[A\to\bullet\alpha\right]\transitionn u*\left[A\to\alpha\bullet\right]$.\label{lem:regle}\end{lem}
+	alors il existe $A\to\alpha\in R$ tel que $\left[A\to\bullet\alpha\right]\transitionn u*\left[A\to\alpha\bullet\right]$.\label{lem:regle}\end{lem}
 \begin{proof}
 	On le prouve par récurrence forte sur $n$.\end{proof}
 \begin{itemize}
-	\item Pour une dérivation de longueur $1$, $A\to^{1}u$ donc $A\to u\in P$.
+	\item Pour une dérivation de longueur $1$, $A\to^{1}u$ donc $A\to u\in R$.
 	On en déduit (en notant $a_{1},\ \dots,\ a_{k}$ les lettres de $u$)
 	\[
 	\left[A\to\bullet u\right]=\left[A\to\bullet a_{1}a_{2}\dots a_{k}\right]\underset{(L)}{\transition{a_{1}}}\left[A\to a_{1}\bullet a_{2}\dots a_{k}\right]\underset{(L)}{\transition{a_{2}}}\dots\underset{(L)}{\transition{a_{k}}}\left[A\to a_{1}a_{2}\dots a_{k}\bullet\right]=\left[A\to u\bullet\right]
@@ -541,13 +560,14 @@ que l'on a déjà lu $v$ et que l'on veut maintenant lire $w$.
 		\]
 		\\
 		Et donc on a bien $\left[A\to\bullet\alpha\right]\transitionn u*\left[A\to\alpha\bullet\right]$,
-		c'est-à-dire $A\to\alpha\in P$ convient.
+		c'est-à-dire $A\to\alpha\in R$ convient.
 	\end{itemize}
 \end{itemize}
-\begin{thm}
+\begin{thm}[Développement 2, partie 3/3]
 	$\L\left(A_{G}\right)=\L\left(G\right)$
 \end{thm}
-\begin{proof}On prouve les deux inclusions.
+\begin{proof}
+	On prouve les deux inclusions.
 	\begin{itemize}
 		\item[\og $\subseteq$ \fg{}]  Soit $u\in\L\left(A_{G}\right)$. Par définition de $\L\left(A_{G}\right)$,
 		$\left[S'\to\bullet S\right]\transitionn u0\left[S'\to S\bullet\right]$.
@@ -562,9 +582,9 @@ que l'on a déjà lu $v$ et que l'on veut maintenant lire $w$.
 	\end{itemize}
 \end{proof}
 
-\subsection{LL(k)}
+\subsection{LL(k) (TODO)}
 
-\subsection{LR(k)}
+\subsection{LR(k) (TODO)}
 
 refs
 
