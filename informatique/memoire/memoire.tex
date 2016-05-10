@@ -404,43 +404,120 @@ Nous avons vu à l'exemple \ref{dyck} que les langages de Dyck sont algébriques
 
 
 
-\section{Problèmes de décision (TODO)}
+\section{Problèmes de décision}
 
 \subsection{Problèmes décidables}
+
 \begin{thm}
-	La vacuité d'un langage algébrique (représenté par une grammaire $G$)
-	est décidable en temps $O\left(\abs G\right)$.
+	La vacuité d'un langage algébrique (représenté par une grammaire $G$) est décidable en temps $O\left(\abs G\right)$.
 \end{thm}
 
-\begin{thm}
-	L'appartenance d'un mot $u$ à un langage algébrique (représenté par
-	une grammaire) est décidable en temps $O\left(\abs G\abs u^{3}\right)$.
-	{[}Hopcroft, p. 298. La complexité en |G| vient de Wikipedia mais
-	on peut s'en convaincre en lisant l'algo{]}\end{thm}
-\begin{rem}
-	La forme normale quadratique donne un algorithme exponentiel en $\abs u$
-	car on peut borner la longueur d'une dérivation et donc tester toutes
-	les dérivations possibles.\\
-	
-\end{rem}
-Floyd, p.321, Earley (descendante)???
+\begin{thm} % {[}Hopcroft, p. 298. La complexité en |G| vient de Wikipedia mais on peut s'en convaincre en lisant l'algo{]}
+	L'appartenance d'un mot $u$ à un langage algébrique (représenté par une grammaire) est décidable en temps $O\left(\abs G\abs u^{3}\right)$.
+\end{thm}
 
-problemes decidables : (L et L' det) L=R, R $\subseteq L$ {[}carton,
-juste pares les trucs indecidables{]}, L rat, L=L' {[}Hopc., p.246{]}
+\begin{rem}
+	La forme normale quadratique donne un algorithme exponentiel en $\abs u$ car on peut borner la longueur d'une dérivation et donc tester toutes les dérivations possibles.
+\end{rem}
+
+%Floyd, p.321, Earley (descendante)???
+
+%problemes decidables : (L et L' det) L=R, R $\subseteq L$ {[}carton,
+%juste pares les trucs indecidables{]}, L rat, L=L' {[}Hopc., p.246{]}
 
 
 \subsection{Problèmes indécidables}
-\begin{prop}[Développement 1, partie 1/2]
-	Les problèmes suivants sont indécidable : {[}Carton, p. 154{]} {[}DEV, partie 1/2,
-	Admet PCP indécidable{]}
+\begin{prop}[Développement 1, partie 1/2]\label{thindec}
+	Les problèmes suivants sont indécidable : % {[}Carton, p. 154{]} {[}DEV, partie 1/2,
+	% Admet PCP indécidable{]}
 	\begin{itemize}
-		\item Pour deux grammaires, l'intersection des langages engendrés est-elle
-		vide ?
-		\item Pour deux grammaires, les langages engendrés sont-ils égaux ?
-		\item Pour une grammaire, engendre-t-elle le langage de tous les mots sur
-		l'alphabet ?
+		\item[1.] Pour deux grammaires, l'intersection des langages engendrés est-elle vide ?
+		\item[2.] Pour deux grammaires, les langages engendrés sont-ils égaux ?
+		\item[3.] Pour une grammaire, engendre-t-elle le langage de tous les mots sur l'alphabet ?
 	\end{itemize}
 \end{prop}
+
+Pour prouver the théorème on va utiliser l'indécidabilité du  problème de correspondance de Post (PCP). On commence donc par définir des langages associés à une instance de PCP.
+
+Soit $(u_1,v_1),\dots,(u_m,v_m)$ une instance de PCP sur un alphabet $\Sigma$. On pose $\Sigma' = \Sigma \sqcup A$ où $A=\{a_1,\dots, a_m\}$ et $a_1,\dots,a_m$ sont des lettres n'appartenant pas à $\Sigma$. On définit deux langages sur $\Sigma'$ :
+$$L_u=\set{u_{i_1}\dots u_{i_n}a_{i_n}\dots a_{i_1} : n\ge 0\text{ et }1\le i_k \le m}$$
+$$L_u'=\set{wa_{i_n}\dots a_{i_1} : n\ge 0, w\in\Sigma^*\text{ et }w\not=u_{i_1}\dots u_{i_n}}$$
+
+On note $\varphi_u(a_{i_n}\dots a_{i_1})$ pour $u_{i_1}\dots u_{i_n}$. On a alors $L_u=\set{\varphi_u(x)x : x \in A^*}$ et $L_u'=\set{wx : x \in A^*\text{ et } w\not=\varphi_u(x)}$.
+
+On remarque que $L_u \sqcup L_u' = \Sigma^*A^*$.
+
+On définit de même $L_v$ et $L_v'$ en remplaçant $u_i$ par $v_i$.
+
+\begin{lem}
+	$L_u$ est algébrique.
+\end{lem}
+
+\begin{proof}
+	La grammaire $G_u = \set{S\to u_1Sa_1+\dots+ u_mSa_m+\varepsilon}$ convient.
+\end{proof}
+
+\begin{lem}
+	$L_u'$ est algébrique.
+\end{lem}
+
+\begin{proof}
+	On pose la grammaire $G_u'$ suivante :
+	\[\begin{array}{l}
+	\displaystyle S\to \sum_{i=1}^mu_iSa_i + \sum_{\substack{1\le i \le m\\x\in\Sigma^*\\ \abs{x}=\abs{u_i}\\x\not=u_i}}xRa_i+\sum\limits_{\substack{1\le i\le m\\x\in\Sigma^*\\\abs{x}<\abs{u_i}}}xTa_i+\sum\limits_{b\in \Sigma}bV\\\\
+	\displaystyle R\to \sum_{i=1}^mRa_i+\sum_{b\in\Sigma}bR+\varepsilon\\\\
+	\displaystyle T\to \sum_{i=1}^mTa_i+\varepsilon\\\\
+	\displaystyle V\to \sum_{b\in\Sigma}bV+\varepsilon
+	\end{array}\]
+	
+	On commence par remarquer que $\L_{G_u'}(R)=\Sigma^*A^*$, $\L_{G_u'}(T)=A^*$ et $\L_{G_u'}(V)=\Sigma^*$.
+	
+	On montre l'égalité $\L(G_u')= L_u'$ par double inclusion.
+	\begin{itemize}
+		\item[<<$\subseteq$>>] : Une dérivation commence par$$\displaystyle S\to u_{i_1}Sa_{i_1}\to S\to u_{i_1}u_{i_2}Sa_{i_2}a_{i_1}\to^* u_{i_1}\dots u_{i_j}Sa_{i_j}\dots a_{i_1}$$ et au bout d'un moment, le $S$ disparaît du mot en cours de dérivation. On va noter $\alpha=a_{i_j}\dots a_{i_1}$. On a donc $S\to^*\varphi_u(\alpha)S\alpha$. On a alors trois cas :
+		\begin{itemize}
+			\item $\varphi_u(\alpha)S\alpha\to \varphi_u(\alpha)xRa_i\alpha\to \varphi_u(\alpha)x\beta\gamma a_i\alpha$ avec $\beta\in \Sigma^*$, $\gamma\in A^*$, $1\le i \le m$, $x\in\Sigma^*$, $\abs{x}=\abs{u_i}$ et $x\not=u_i$. On a donc bien $\varphi_u(\gamma a_i\alpha)=\varphi_u(\alpha)\varphi_u(a_i)\varphi_u(\gamma)=\varphi_u(\alpha)u_i\varphi_u(\gamma)\not=\varphi_u(\alpha)u\beta$.
+			\item $\varphi_u(\alpha)S\alpha\to \varphi_u(\alpha)xTa_i\alpha\to \varphi_u(\alpha)x\gamma a_i\alpha$ avec $\gamma\in A^*$, $1\le i \le m$, $x\in\Sigma^*$ et $\abs{x}<\abs{u_i}$. On a donc bien $\varphi_u(\gamma a_i\alpha)=\varphi_u(\alpha)\varphi_u(a_i)\varphi_u(\gamma)=\varphi_u(\alpha)u_i\varphi_u(\gamma)\not=\varphi_u(\alpha)u$.
+			\item $\varphi_u(\alpha)S\alpha\to \varphi_u(\alpha)bV\alpha\to \varphi_u(\alpha)b\beta \alpha$ avec $\beta\in \Sigma^*$. On a donc bien $\varphi_u(\alpha)\not=\varphi_u(\alpha)b\beta$.
+		\end{itemize}
+		\item[<<$\supseteq$>>] : On le prouve par récurrence sur le nombre de symboles de $A$.
+		\begin{itemize}
+			\item Initialisation : Soit $x\in L_u'\cap\Sigma^*A^0$. On a
+			$$S\to x_1V \to x_1x_2V\to \dots \to x_1\dots x_{\abs{x}}V=xV\to x$$
+			Donc on a bien $x\in \L(G_u')$.
+			\item Récurrence : Supposons que pour tout $x\in L_u'\cap\Sigma^*A^k$, $x\in \L(G_u')$, pour un certain $k\ge 0$. Soit $x \in L_u'\cap\Sigma^*A^{k+1}$. $x=w\alpha a_i$ avec $w\in\Sigma^*$, $\alpha\in A^*$, $a_i\in A$ et $\varphi_u(\alpha a_i)\not= w$. On a donc $u_i\varphi_u(\alpha)\not= w$.
+			\begin{itemize}
+				\item Si $\abs{w}<\abs{u_i}$, on a $S\to wTa_i\to^* w\alpha a_i=x$. Donc $x\in \L(G_u')$.
+				\item Si $\abs{w}\ge \abs{u_i}$, on factorise $w$ en $w=w'w''$ avec $\abs{w'}=\abs{u_i}$. On a donc $u_i\varphi_u(\alpha)\not= w'w''$.
+				\begin{itemize}
+					\item Si $w'=u_i$, alors $\varphi_u(\alpha)\not=w''$ donc $w''\alpha\in L_u'$. Par hypothèse de récurrence, on a donc $S\to^* w''\alpha$. Donc $S\to u_iSa_i\to^*u_i w''\alpha a_i=w'w''\alpha a_i=w\alpha a_i = x$. Donc $x\in \L(G_u')$.
+					\item Si $w'\not= u_i$, $S\to w'Ra_i\to^* w'w''\alpha a_i=w\alpha a_i = x$. Donc $x\in \L(G_u')$.
+				\end{itemize}
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{proof}
+
+\begin{lem}
+	Une instance de PCP est positive si et seulement si $L_u\cap L_v\not= \emptyset$.
+\end{lem}
+
+\begin{proof}
+	\begin{itemize}
+		\item[<<$\Rightarrow$>>] : Si $u_{i_1}\dots u_{i_n}=v_{i_1}\dots v_{i_n}$ alors $L_u\ni u_{i_1}\dots u_{i_n}a_{i_n}\dots a_{i_1}=v_{i_1}\dots v_{i_n}a_{i_n}\dots a_{i_1}\in L_v$ donc $L_u\cap L_v \not= \emptyset$.
+		\item[<<$\Leftarrow$>>] : Si $L_u\cap L_v \not= \emptyset$, soit $x\in L_u\cap L_v$. $x = \varphi_u(\alpha)\alpha$ pour un certain $\alpha \in A^*$ et $x = \varphi_v(\alpha')\alpha'$ pour un certain $\alpha'\in A^*$. Comme $\Sigma$ et $A$ sont disjoints, $\varphi_u(\alpha)=\varphi_v(\alpha')$ et $\alpha=\alpha'$. On en déduit $\varphi_u(\alpha)=\varphi_v(\alpha)$. On factorise $\alpha$ en mots de taille $1$ : $\alpha = a_{i_n}\dots a_{i_1}$. On a alors $u_{i_1}\dots u_{i_n}=\varphi_u(\alpha)=\varphi_v(\alpha)=v_{i_1}\dots v_{i_n}$ donc l'instance de PCP est positive.
+	\end{itemize}
+\end{proof}
+
+\begin{proof}[Démonstation de \ref{thindec}]
+	\item[1'] On pose $1'$ la restriction du problème $1$ aux langages de la forme $L_u$. Par le lemme précédent, le calcul de $L_u$ et $L_v$ (qui peut effectivement se faire) est une réduction de $PCP$ à $1'$. Comme PCP est indécidable, cela implique de $1'$ l'est.
+	
+	\item[1.] L'inclusion des instance de 1' dans celles de 1 est une réduction de $1'$ vers $1$. Or $1'$ est indécidable donc $1$ l'est également.
+	
+	\item[3.] TODO
+	
+	\item[2.] TODO
+\end{proof}
 
 \section{Application à la compilation}
 
@@ -479,6 +556,10 @@ Lors de la compilation, on cherche à donner une structure d'arbre à un program
 \begin{prop}[Développement 1, partie 2/2]
 	L'ambiguïté d'une grammaire algébrique est indécidable.
 \end{prop}
+
+\begin{proof}
+	TODO
+\end{proof}
 
 \begin{defn}[Langage ambigu] %{[}Carton, p. 91{]}
 	Un langage algébrique est dit \emph{non ambigu} s'il existe une grammaire algébrique non ambiguë qui l'engendre et \emph{inhéremment ambigu} si toute grammaire algébrique qui l'engendre est ambiguë.
