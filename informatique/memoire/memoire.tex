@@ -1,6 +1,6 @@
 \providecommand{\base}{../..}
 \providecommand{\ifallthenelse}[2]{#2}
-\documentclass[10pt,a4paper,notitlepage]{article}
+\documentclass[11pt,a4paper]{article}
 \RequirePackage[l2tabu, orthodox]{nag}
 \usepackage[utf8]{inputenc}
 \usepackage[francais]{babel}
@@ -95,12 +95,79 @@
 \providecommand{\theoremname}{Théorème}
 \renewcommand{\lstlistingname}{Listing}
 
+\usepackage{biblatex}
+\usepackage{filecontents}
+
+\begin{filecontents}{mybib.bib}
+
+@book{SIP,
+	author = {Michael \textsc{Sipser}},
+	title = {Introduction to the Theory of Computation},
+	year = {2013},
+	isbn = {978-81-315-2529-6},
+	publisher = {Cengage Learning},
+}
+
+@book{CAR,
+	author = {Olivier \textsc{Carton}},
+	title = {Langages formels},
+	subtitle = {Calculabilité et complexité},
+	year = {2014},
+	isbn = {978-2-311-01400-6},
+	publisher = {Vuibert},
+}
+
+@book{AUT,
+	author = {Jean-Michel \textsc{Autebert}},
+	title = {Théorie des langages et des automates},
+	year = {1994},
+	isbn = {2-225-84001-6},
+	publisher = {Masson},
+}
+
+@book{WM,
+	author = {Reinhard \textsc{Wilhelm} et Dieter Maurer},
+	title = {Les compilateurs},
+	subtitle = {théorie. construction. génération.},
+	year = {1994},
+	isbn = {2-225-84615-4},
+	publisher = {Masson},
+}
+
+@book{LS,
+	author = {Romain \textsc{Legendre} et François \textsc{Schwarzentruber}},
+	title = {Compilation : analyse lexicale et syntaxique},
+	subtitle = {Du texte à sa structure en informatique},
+	year = {2015},
+	isbn = {9782340-003668},
+	publisher = {Ellipses},
+}
+
+@book{HMU,
+	author = {John E. \textsc{Hopcroft}, Rajeev \textsc{Motwani} et Jeffrey D. \sc{Ullman}},	
+	title = {Introduction to Automata Theory, Languages, and Computation},
+	year = {2003},
+	isbn = {0-321-21029-8},
+	publisher = {Pearson},	
+}
+
+@book{FB,
+	author = {Robert W. \textsc{Floyd} et Richard \sc{Beigel}},	
+	title = {The language of machines},
+	subtitle = {An Introduction to Computability and Formal Languages},
+	year = {1994},
+	isbn = {0-7167-8266-9},
+	publisher = {Computer Science Press},	
+}
+
+
+\end{filecontents}
+
+\addbibresource{mybib.bib}
 \begin{document}
-	
+
 %\usepackage{thmbox}
 %\usepackage[framemethod=tikz]{mdframed}
-
-
 
 
 
@@ -117,6 +184,10 @@ Enfin, nous décrivons leurs applications à la compilation et certaines sous-cl
 \setcounter{tocdepth}{3}
 \tableofcontents
 \newpage
+
+\setlength\parskip{1.3\parskip}
+
+
 \renewcommand\thesection{\arabic{section}}
 
 \global\long\def\leftbrace#1{\left\{  #1\right.}
@@ -163,8 +234,8 @@ Dans cette section, nous donnons deux définitions équivalentes des langages al
 \end{defn}
 
 \begin{example}
-	$G_{1}=\left(\Sigma_{1},\ V_{1},\ R_{1}\right)$, $\Sigma_{1}=\set{a,\ b}$,
-	$V_{1}=\set S$, $R_{1}=\set{S\to aSb,\ S\to\varepsilon}$
+	$G_{1}=\left(\Sigma_{1},\ V_{1},\ R_{1}\right)$, $\Sigma_{1}=\Set{a,\ b}$,
+	$V_{1}=\Set S$, $R_{1}=\Set{S\to aSb,\ S\to\varepsilon}$
 \end{example}
 
 \begin{rem}
@@ -193,12 +264,12 @@ Dans cette section, nous donnons deux définitions équivalentes des langages al
 \end{example}
 
 \begin{defn}[Langage engendré]
-	Pour tout $X\in V$, on pose $\widehat{\L_{G}}\left(u\right)\coloneqq \set{v\in (V\sqcup\Sigma)^*:u\to^* v}$ et $\L_{G}\left(u\right)\coloneqq \widehat{\L_{G}}\left(u\right)\cap \Sigma^*$. On appelle $\L_{G}\left(u\right)$ \emph{langage engendré} par $u$ dans $G$. On appelle \emph{langage engendré} par la grammaire et note $\L\left(G\right)$ le langage $\L_{G}\left(S\right)$ engendré par l'axiom.
+	Pour tout $X\in V$, on pose $\widehat{\L_{G}}\left(u\right)\coloneqq \Set{v\in (V\sqcup\Sigma)^*:u\to^* v}$ et $\L_{G}\left(u\right)\coloneqq \widehat{\L_{G}}\left(u\right)\cap \Sigma^*$. On appelle $\L_{G}\left(u\right)$ \emph{langage engendré} par $u$ dans $G$. On appelle \emph{langage engendré} par la grammaire et note $\L\left(G\right)$ le langage $\L_{G}\left(S\right)$ engendré par l'axiom.
 \end{defn}
 
 \begin{example}
-	$\L_{G_{1}}\left(S\right)=\set{a^{n}b^{n}\ |\ n\in\N}$, $\L_{G_{2}}\left(P\right)=\set{a^{2n}\ |\ n\in\N}$,
-	$\L_{G_{2}}\left(I\right)=\set{a^{2n+1}\ |\ n\in\N}$, $D_{n}^{*}\coloneqq\L_{G_{3,n}}\left(S\right)$
+	$\L_{G_{1}}\left(S\right)=\Set{a^{n}b^{n}\ |\ n\in\N}$, $\L_{G_{2}}\left(P\right)=\Set{a^{2n}\ |\ n\in\N}$,
+	$\L_{G_{2}}\left(I\right)=\Set{a^{2n+1}\ |\ n\in\N}$, $D_{n}^{*}\coloneqq\L_{G_{3,n}}\left(S\right)$
 	est appelé \emph{langage de Dyck}\label{dyck}. C'est le langage des mots bien parenthésés
 	(si l'on considère $a_{i}$ comme une parenthèse ouvrante et $b_{i}$
 	comme la parenthèse fermante correspondante).
@@ -234,7 +305,7 @@ Dans cette section, nous donnons deux définitions équivalentes des langages al
 \end{defn}
 
 \begin{prop}[Grammaire propre]
-	Pour toute grammaire algébrique $G$, $\L_{G}\setminus\set{\varepsilon}$ est engendré par une grammaire
+	Pour toute grammaire algébrique $G$, $\L_{G}\setminus\Set{\varepsilon}$ est engendré par une grammaire
 	propre de taille $O\left(\abs G^{2}\right)$ calculable en temps $O\left(\abs G^{2}\right)$.
 \end{prop}
 
@@ -243,7 +314,7 @@ Dans cette section, nous donnons deux définitions équivalentes des langages al
 \end{defn}
 
 \begin{prop}[Forme normale quadratique / de Chomsky]
-	Pour toute grammaire algébrique $G$, $\L_{G}\setminus\set{\varepsilon}$ est engendré par une grammaire
+	Pour toute grammaire algébrique $G$, $\L_{G}\setminus\Set{\varepsilon}$ est engendré par une grammaire
 	en forme normale quadratique de taille $O\left(\abs G^{2}\right)$
 	calculable en temps $O\left(\abs G^{2}\right)$.
 \end{prop}
@@ -253,7 +324,7 @@ Dans cette section, nous donnons deux définitions équivalentes des langages al
 %{[}Hopcroft, p. 295{]} \{Tout est
 % dans le Carton sauf les complexités\}
 %\begin{prop}
-%		\item $\L_{G}\setminus\set{\varepsilon}$ est engendré par une grammaire
+%		\item $\L_{G}\Setminus\Set{\varepsilon}$ est engendré par une grammaire
 %		en forme normale de Greibach (quadratique).
 %	\end{itemize}
 %\end{prop}
@@ -310,7 +381,7 @@ Dans cette sous-section, nous nous intéressons à l'équivalent du lemme de l'�
 \end{cor}
 
 \begin{application}[de \ref{th:bhs}]
-	Le langage $\set{a^{n}b^{n}c^{n}\ |\ n\in\N}$ n'est pas algébrique.
+	Le langage $\Set{a^{n}b^{n}c^{n}\ |\ n\in\N}$ n'est pas algébrique.
 \end{application}
 
 \begin{example}
@@ -322,7 +393,7 @@ Dans cette sous-section, nous nous intéressons à l'équivalent du lemme de l'�
 \end{example}
 
 \begin{application}[de \ref{th:ogden}]
-	Le langage $\set{a^{m}b^{n}c^{m}d^{n}\ |\ n,m\in\N}$ n'est pas algébrique.
+	Le langage $\Set{a^{m}b^{n}c^{m}d^{n}\ |\ n,m\in\N}$ n'est pas algébrique.
 	
 	Ce langage pourrait représenter le fait qu'on a déclaré deux procédures
 	à $m$ et $n$ arguments et qu'on les a ensuite utilisées. % {[}Dragon,p. 179{]}
@@ -345,7 +416,7 @@ Dans cette sous-section, nous nous intéressons aux propriétés de clôture des
 \end{prop}
 
 \begin{defn}[Morphisme]
-	Un \emph{morphisme} de $X^*$ dans $Y^*$ est une fonction $\varphi:X^*\to Y^*$ telle que $\varphi(\varepsilon) = \varepsilon$ et $\varphi(uv)=\varphi(u)\varphi(v)$ pour tous $u,v\in X ^*$. L'\emph{image} de $L\subseteq X^*$ par $\varphi$ est $\set{f(u) : u \in L}$ et l'\emph{image inverse} de $L'\subseteq Y^*$ par $\varphi$ est $\set{u \in X^* : \varphi(u) \in L'}$.
+	Un \emph{morphisme} de $X^*$ dans $Y^*$ est une fonction $\varphi:X^*\to Y^*$ telle que $\varphi(\varepsilon) = \varepsilon$ et $\varphi(uv)=\varphi(u)\varphi(v)$ pour tous $u,v\in X ^*$. L'\emph{image} de $L\subseteq X^*$ par $\varphi$ est $\Set{f(u) : u \in L}$ et l'\emph{image inverse} de $L'\subseteq Y^*$ par $\varphi$ est $\Set{u \in X^* : \varphi(u) \in L'}$.
 \end{defn}
 
 \begin{prop}
@@ -353,7 +424,7 @@ Dans cette sous-section, nous nous intéressons aux propriétés de clôture des
 \end{prop}
 
 \begin{defn}[Substitution algébrique]
-	Une \emph{substitution algébrique} est une fonction $\sigma:X^*\to \mathcal{P}(Y^*)$ telle que $\sigma(\varepsilon)=\set{\varepsilon}$, $\sigma(uv)=\sigma(u)\sigma(v)$ pour tous $u,v\in X ^*$, et pour tout $a\in X$, $\sigma(a)$ est algébrique. L'\emph{image} de $L\subseteq X^*$ par $\sigma$ est $\underset{u\in L}{\bigcup}\sigma(u)$.
+	Une \emph{substitution algébrique} est une fonction $\sigma:X^*\to \mathcal{P}(Y^*)$ telle que $\sigma(\varepsilon)=\Set{\varepsilon}$, $\sigma(uv)=\sigma(u)\sigma(v)$ pour tous $u,v\in X ^*$, et pour tout $a\in X$, $\sigma(a)$ est algébrique. L'\emph{image} de $L\subseteq X^*$ par $\sigma$ est $\underset{u\in L}{\bigcup}\sigma(u)$.
 \end{defn}
 
 \begin{prop}
@@ -406,6 +477,8 @@ Nous avons vu à l'exemple \ref{dyck} que les langages de Dyck sont algébriques
 
 \section{Problèmes de décision}
 
+Le gain d'expressivité par rapport aux langages rationnels rend certains problèmes de décision plus difficiles voire indécidables.
+
 \subsection{Problèmes décidables}
 
 \begin{thm}
@@ -439,11 +512,11 @@ Nous avons vu à l'exemple \ref{dyck} que les langages de Dyck sont algébriques
 
 Pour prouver the théorème on va utiliser l'indécidabilité du  problème de correspondance de Post (PCP). On commence donc par définir des langages associés à une instance de PCP.
 
-Soit $(u_1,v_1),\dots,(u_m,v_m)$ une instance de PCP sur un alphabet $\Sigma$. On pose $\Sigma' = \Sigma \sqcup A$ où $A=\{a_1,\dots, a_m\}$ et $a_1,\dots,a_m$ sont des lettres n'appartenant pas à $\Sigma$. On définit deux langages sur $\Sigma'$ :
-$$L_u=\set{u_{i_1}\dots u_{i_n}a_{i_n}\dots a_{i_1} : n\ge 0\text{ et }1\le i_k \le m}$$
-$$L_u'=\set{wa_{i_n}\dots a_{i_1} : n\ge 0, w\in\Sigma^*\text{ et }w\not=u_{i_1}\dots u_{i_n}}$$
+Soit $(u_1,v_1),\dots,(u_m,v_m)$ une instance de PCP sur un alphabet $\Sigma$. On pose $A=\{a_1,\dots, a_m\}$ où $a_1,\dots,a_m$ sont des lettres n'appartenant pas à $\Sigma$. On définit deux langages sur $\Sigma \sqcup A$ :
+$$L_u=\Set{u_{i_1}\dots u_{i_n}a_{i_n}\dots a_{i_1} : n\ge 0\text{ et }1\le i_k \le m}\setminus \Set{\varepsilon}$$
+$$L_u'=\Set{wa_{i_n}\dots a_{i_1} : n\ge 0, w\in\Sigma^*\text{ et }w\not=u_{i_1}\dots u_{i_n}}\cup \Set{\varepsilon}$$
 
-On note $\varphi_u(a_{i_n}\dots a_{i_1})$ pour $u_{i_1}\dots u_{i_n}$. On a alors $L_u=\set{\varphi_u(x)x : x \in A^*}$ et $L_u'=\set{wx : x \in A^*\text{ et } w\not=\varphi_u(x)}$.
+On note $\varphi_u(a_{i_n}\dots a_{i_1})$ pour $u_{i_1}\dots u_{i_n}$. On a alors $L_u=\Set{\varphi_u(x)x : x \in A^*}\setminus \Set{\varepsilon}$ et $L_u'=\Set{wx : x \in A^*\text{ et } w\not=\varphi_u(x)}\cup \Set{\varepsilon}$.
 
 On remarque que $L_u \sqcup L_u' = \Sigma^*A^*$.
 
@@ -454,7 +527,7 @@ On définit de même $L_v$ et $L_v'$ en remplaçant $u_i$ par $v_i$.
 \end{lem}
 
 \begin{proof}
-	La grammaire $G_u = \set{S\to u_1Sa_1+\dots+ u_mSa_m+\varepsilon}$ convient.
+	La grammaire $\displaystyle G_u = \Set{S\to \sum_{i=1}^mu_iSa_i+\sum_{i=1}^mu_ia_i}$ convient.
 \end{proof}
 
 \begin{lem}
@@ -464,6 +537,7 @@ On définit de même $L_v$ et $L_v'$ en remplaçant $u_i$ par $v_i$.
 \begin{proof}
 	On pose la grammaire $G_u'$ suivante :
 	\[\begin{array}{l}
+	\displaystyle S_0 \to S + \varepsilon\\
 	\displaystyle S\to \sum_{i=1}^mu_iSa_i + \sum_{\substack{1\le i \le m\\x\in\Sigma^*\\ \abs{x}=\abs{u_i}\\x\not=u_i}}xRa_i+\sum\limits_{\substack{1\le i\le m\\x\in\Sigma^*\\\abs{x}<\abs{u_i}}}xTa_i+\sum\limits_{b\in \Sigma}bV\\\\
 	\displaystyle R\to \sum_{i=1}^mRa_i+\sum_{b\in\Sigma}bR+\varepsilon\\\\
 	\displaystyle T\to \sum_{i=1}^mTa_i+\varepsilon\\\\
@@ -472,12 +546,12 @@ On définit de même $L_v$ et $L_v'$ en remplaçant $u_i$ par $v_i$.
 	
 	On commence par remarquer que $\L_{G_u'}(R)=\Sigma^*A^*$, $\L_{G_u'}(T)=A^*$ et $\L_{G_u'}(V)=\Sigma^*$.
 	
-	On montre l'égalité $\L(G_u')= L_u'$ par double inclusion.
+	On montre l'égalité $\L_{G_u'}(S) = \Set{wx : x \in A^*\text{ et } w\not=\varphi_u(x)}$ par double inclusion. L'égalité $\L(G_u')= L_u'$ en découle immédiatement.
 	\begin{itemize}
-		\item[<<$\subseteq$>>] : Une dérivation commence par$$\displaystyle S\to u_{i_1}Sa_{i_1}\to S\to u_{i_1}u_{i_2}Sa_{i_2}a_{i_1}\to^* u_{i_1}\dots u_{i_j}Sa_{i_j}\dots a_{i_1}$$ et au bout d'un moment, le $S$ disparaît du mot en cours de dérivation. On va noter $\alpha=a_{i_j}\dots a_{i_1}$. On a donc $S\to^*\varphi_u(\alpha)S\alpha$. On a alors trois cas :
+		\item[<<$\subseteq$>>] : Soit $x\in \L_{G_u'}(S)$. Une dérivation $S\to^* x$ est nécessairement de la forme $$\displaystyle S\to u_{i_1}Sa_{i_1}\to S\to u_{i_1}u_{i_2}Sa_{i_2}a_{i_1}\to^* u_{i_1}\dots u_{i_j}Sa_{i_j}\dots a_{i_1}\to y \to^* x$$ où $S$ n'apparait pas dans $y$. On va noter $\alpha=a_{i_j}\dots a_{i_1}$. On a donc $S\to^*\varphi_u(\alpha)S\alpha\to y$ et $S$ n'apparait pas dans $y$. On a alors trois cas selon le non terminal présent dans $y$ :
 		\begin{itemize}
-			\item $\varphi_u(\alpha)S\alpha\to \varphi_u(\alpha)xRa_i\alpha\to \varphi_u(\alpha)x\beta\gamma a_i\alpha$ avec $\beta\in \Sigma^*$, $\gamma\in A^*$, $1\le i \le m$, $x\in\Sigma^*$, $\abs{x}=\abs{u_i}$ et $x\not=u_i$. On a donc bien $\varphi_u(\gamma a_i\alpha)=\varphi_u(\alpha)\varphi_u(a_i)\varphi_u(\gamma)=\varphi_u(\alpha)u_i\varphi_u(\gamma)\not=\varphi_u(\alpha)u\beta$.
-			\item $\varphi_u(\alpha)S\alpha\to \varphi_u(\alpha)xTa_i\alpha\to \varphi_u(\alpha)x\gamma a_i\alpha$ avec $\gamma\in A^*$, $1\le i \le m$, $x\in\Sigma^*$ et $\abs{x}<\abs{u_i}$. On a donc bien $\varphi_u(\gamma a_i\alpha)=\varphi_u(\alpha)\varphi_u(a_i)\varphi_u(\gamma)=\varphi_u(\alpha)u_i\varphi_u(\gamma)\not=\varphi_u(\alpha)u$.
+			\item $\varphi_u(\alpha)S\alpha\to \varphi_u(\alpha)zRa_i\alpha\to \varphi_u(\alpha)z\beta\gamma a_i\alpha$ avec $\beta\in \Sigma^*$, $\gamma\in A^*$, $1\le i \le m$, $z\in\Sigma^*$, $\abs{z}=\abs{u_i}$ et $z\not=u_i$. On a donc bien $\varphi_u(\gamma a_i\alpha)=\varphi_u(\alpha)\varphi_u(a_i)\varphi_u(\gamma)=\varphi_u(\alpha)u_i\varphi_u(\gamma)\not=\varphi_u(\alpha)u\beta$.
+			\item $\varphi_u(\alpha)S\alpha\to \varphi_u(\alpha)zTa_i\alpha\to \varphi_u(\alpha)z\gamma a_i\alpha$ avec $\gamma\in A^*$, $1\le i \le m$, $z\in\Sigma^*$ et $\abs{z}<\abs{u_i}$. On a donc bien $\varphi_u(\gamma a_i\alpha)=\varphi_u(\alpha)\varphi_u(a_i)\varphi_u(\gamma)=\varphi_u(\alpha)u_i\varphi_u(\gamma)\not=\varphi_u(\alpha)u$.
 			\item $\varphi_u(\alpha)S\alpha\to \varphi_u(\alpha)bV\alpha\to \varphi_u(\alpha)b\beta \alpha$ avec $\beta\in \Sigma^*$. On a donc bien $\varphi_u(\alpha)\not=\varphi_u(\alpha)b\beta$.
 		\end{itemize}
 		\item[<<$\supseteq$>>] : On le prouve par récurrence sur le nombre de symboles de $A$.
@@ -514,9 +588,9 @@ On définit de même $L_v$ et $L_v'$ en remplaçant $u_i$ par $v_i$.
 	
 	\item[1.] L'inclusion des instance de 1' dans celles de 1 est une réduction de $1'$ vers $1$. Or $1'$ est indécidable donc $1$ l'est également.
 	
-	\item[3.] TODO
+	\item[3.] $(L_u\cap L_v)^c=(\Sigma+A)^*\setminus (L_u\cap L_v)=((\Sigma+A)^*\setminus L_u)\cup((\Sigma+A)^*\setminus  L_v)$ donc $L_u\cap L_v=\emptyset \iff ((\Sigma+A)^*\setminus L_u)\cup((\Sigma+A)^*\setminus  L_v)=(\Sigma+A)^*$. Or comme $L_u\sqcup L_u'=\Sigma^*A^*$, on a $(\Sigma+A)^*\setminus L_u=L_u'\cup ((\Sigma+A)^*\setminus \Sigma^*A^*)$ qui est donc algébrique. Le calcul de $((\Sigma+A)^*\setminus L_u)\cup((\Sigma+A)^*\setminus  L_v)$ est donc une réduction de $1'$ à $3$. Or $1'$ est indécidable donc $3$ l'est aussi.
 	
-	\item[2.] TODO
+	\item[2.] $2$ se réduit à $3$ et est donc également indécidable.
 \end{proof}
 
 \section{Application à la compilation}
@@ -526,7 +600,7 @@ On définit de même $L_v$ et $L_v'$ en remplaçant $u_i$ par $v_i$.
 Lors de la compilation, on cherche à donner une structure d'arbre à un programme (c'est-à-dire un mot du langage de programmation). Il est donc naturel de s'assurer que pour chaque mot, un tel arbre est unique. Les langages vérifiant cette propriété sont dits non ambigus.
 
 \begin{defn}[Arbre de dérivation]
-	Soit $G=(\Sigma,V,R,S)$ une grammaire algébrique. Un \emph{arbre de dérivation} est un arbre fini dont les noeuds sont étiquettés par $V\sqcup \Sigma \sqcup \set{\varepsilon}$ vérifiant la propriété suivante. Si $X$ est l'étiquette d'un noeud interne et $\alpha_1,\dots,\alpha_n$ sont les étiquettes de ses fils alors $S\to \alpha_1\dots\alpha_n$.
+	Soit $G=(\Sigma,V,R,S)$ une grammaire algébrique. Un \emph{arbre de dérivation} est un arbre fini dont les noeuds sont étiquettés par $V\sqcup \Sigma \sqcup \Set{\varepsilon}$ vérifiant la propriété suivante. Si $X$ est l'étiquette d'un noeud interne et $\alpha_1,\dots,\alpha_n$ sont les étiquettes de ses fils alors $S\to \alpha_1\dots\alpha_n$.
 \end{defn}
 
 \begin{defn}[Frontière]
@@ -558,7 +632,19 @@ Lors de la compilation, on cherche à donner une structure d'arbre à un program
 \end{prop}
 
 \begin{proof}
-	TODO
+	On utilise les constructions de la preuve de la proposition \ref{thindec}.
+	
+	On pose $G_{u,v}$ la grammaire suivante.
+	
+	\[\begin{array}{l}
+		\displaystyle S \to S_1 + S_2\\
+		\displaystyle S_1 \to \sum_{i=1}^m u_i S_1 a_i + \sum_{i=1}^m u_i a_i\\
+		\displaystyle S_2 \to \sum_{i=1}^m v_i S_2 a_i + \sum_{i=1}^m v_i a_i
+	\end{array}\]
+	
+	$G_{u,v}$ engendre $(L_u\cup L_v)\setminus \Set{\varepsilon}$.
+	
+	Les $a_i$ permettent de savoir quelles règles $S_1\to u_i s_1 a_i$ ou $S_1\to u_i a_i$ ont été utilisées pour engendrer le mot donc les grammaires $\Set{S_1 \to \sum_{i=1}^m u_i S_1 a_i + \sum_{i=1}^m u_i a_i}$ et $\Set{S_2 \to \sum_{i=1}^m v_i S_2 a_i + \sum_{i=1}^m v_i a_i}$ sont non ambigües. La grammaire $G_{u,v}$ est donc ambigüe si et seulement si $\L_{G_{u,v}}(S_1)\cap \L_{G_{u,v}}(S_2)\not=\emptyset$, c'est-à-dire si $L_u\cap L_v\not=\emptyset$. On a donc une réduction de $1'$ au problème de décision de l'ambiguïté d'une grammaire algébrique. $1'$ étant indécidable, l'ambiguïté d'une grammaire algébrique l'est également.
 \end{proof}
 
 \begin{defn}[Langage ambigu] %{[}Carton, p. 91{]}
@@ -617,9 +703,9 @@ Ne pouvant pas décider l'ambiguïté d'une grammaire algébrique, on cherche un
 	Tout langage algébrique déterministe est non ambigu et l'inclusion est stricte.
 \end{prop}
 
-\subsection{Automate des items}
+\subsection{Automate des items et analyses LL(k) et LR(k)}
 
-L'automate des items associé à une grammaire algébrique accepte le langage engendré par la grammaire, et peut donc permettre de montrer un sens de l'équivalence \ref{th:equiv}. Il permet également de décrire et motiver les analyseurs LL et LR décrits dans les sous-section suivantes.
+L'automate des items associé à une grammaire algébrique accepte le langage engendré par la grammaire, et peut donc permettre de montrer un sens de l'équivalence \ref{th:equiv}. Il permet également de décrire et motiver les analyseurs LL et LR introduits dans les sous-section suivantes.
 
 Soit une grammaire algébrique $G=\left(\Sigma,\ V,\ R, S\right)$ à
 laquelle on ajoute une nouvelle variable $S'$ et une nouvelle règle
@@ -755,12 +841,36 @@ que l'on a déjà lu $v$ et que l'on veut maintenant lire $w$.
 	\end{itemize}
 \end{proof}
 
-\subsection{LL(k) (TODO)}
+L'automate des items est (en général) non-déterministe car si une grammaire contient deux règles $X\to \beta$ et $X\to \beta'$, alors il y aura deux transitions $(E)$ : $\left[Y\to\alpha\bullet B\gamma\right]\overset{\varepsilon}{\rightarrowtail}\left[X\to\alpha\bullet B\gamma\right]\left[B\to\bullet\beta\right]$ et $\left[Y\to\alpha\bullet B\gamma\right]\overset{\varepsilon}{\rightarrowtail}\left[X\to\alpha\bullet B\gamma\right]\left[B\to\bullet\beta'\right]$. On définit donc certains classes de grammaires qui permettent de déterminiser, en un certain sens, l'automate des items.
 
-\subsection{LR(k) (TODO)}
+\begin{defn}
+	Une grammaire algébrique est dite \emph{$LL(k)$} si la connaissance des $k$ symboles suivants du mot permet de choisir la transition $(E)$.
+\end{defn}
 
-refs
+\begin{rem}
+	On peut alors déterminiser l'automate si on remplace son unique état par $(\Sigma\sqcup \Set{\#})^k$ (où $\#$ signifie que le mot est fini, et au lieu du mot $u$, l'automate accepte $u\#^k$) et que l'on se sert des états pour stocker les $k$ symboles suivants avant de les traiter.
+\end{rem}
 
-Reinhard Wilhelm, Dieter Maurer, Compiler design, p. 281-282
+\begin{prop}
+	Une grammaire $LL(k)$ est non ambiguë.
+\end{prop}
+
+\begin{defn}
+	Une grammaire algébrique est dite \emph{$LR(k)$} si, en acceptant temporairement le non-déterminisme causé par les transition $(E)$, la connaissance des $k$ symboles suivants du mot permet de choisir parmi les transitions $(L)$ et $(R)$ possibles.
+\end{defn}
+
+\begin{rem}
+	Le choix de la règle $(R)$ détermine, a posteriori, la bonne règle $(E)$. L'analyse $LR$ retarde le plus possible le choix de la règle $(E)$ : jusqu'à la règle $(R)$ correspondante.
+\end{rem}
+
+\begin{prop}
+	Une grammaire $LR(k)$ est non ambiguë.
+\end{prop}
+
+%Reinhard Wilhelm, Dieter Maurer, Compiler design, p. 281-282
+\newpage
+\nocite{*}
+\printbibliography
+
 
 \end{document}
