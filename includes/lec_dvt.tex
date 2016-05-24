@@ -65,8 +65,11 @@
 	} { RECOMPILE }
 }
 
+\newcommand{\calclnbdvtsprec}[1]{
+	
+}
+
 \newcommand{\ListerDvts}[1]{
-	\subsection{Développements}
 	\seq_if_exist:NTF \g_lecons_dvts_seq_stored {%
 		\int_case:nnF { \seq_count:c {g_lecon#1_dvts_seq_stored} } {
 			{ 0 } { Aucun. }
