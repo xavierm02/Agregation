@@ -4,6 +4,19 @@
   \csname #2\endcsname
 }
 
+% http://tex.stackexchange.com/questions/312181/line-on-the-left-and-right-of-sections-names
+
+%\usepackage{showframe}
+\usepackage{mwe}
+
+\makeatletter
+\newcommand{\linetitle}[1]% #1 = section title text
+{\settowidth{\@tempdimb}{\@svsec}% section number is variable width
+	\llap{\rule{\marginparwidth}{1pt}\hspace{\marginparsep}\hspace{\@tempdimb}}% left margin
+	\parbox[t]{\dimexpr \textwidth-\@tempdimb}{#1}%
+	\rlap{\hspace{\marginparsep}\rule{\marginparwidth}{1pt}}}
+\makeatother
+
 % http://tex.stackexchange.com/a/174610/82912
 \usepackage{tocloft}
 \cftsetindents{section}{0em}{3em}
@@ -14,9 +27,15 @@
 
 \str_new:N \g_lecon%
 
+\renewcommand{\thechapter}{}
+\renewcommand\thesection{\@arabic\c@section}
+\renewcommand\thesubsection{\@arabic\c@section.\@arabic\c@subsection}
+
+\newcommand{\mysection}[1]{\section[#1]{\linetitle{#1}}}
 \newcommand{\lec}[2]{%
 	\str_set:Nn \g_lecon {#1}%
-	\section{#1\ - #2~(\nbdvts{#1}/2)}%
+	\setcounter{section}{\numexpr#1-1\relax}
+	\mysection{#2~(\nbdvts{#1}/2)}%
 	\label{lec:#1}%
 }%
 
@@ -26,7 +45,7 @@
 
 \newcommand{\dvt}[2]{%
 	\str_set:Nn \g_dvt {#1}%
-	\section{#2}%
+	\section[#2]{\linetitle{#2}}%
 	\label{dvt:#1}%
 }%
 

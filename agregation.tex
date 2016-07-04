@@ -93,8 +93,8 @@
 \providecommand{\base}{.}
 \providecommand{\ifallthenelse}[2]{#1}
 
-\usepackage[backend=bibtex,style=numeric]{biblatex}
-\bibliography{\base/includes/bib.bib}
+\usepackage[maxnames=1]{biblatex}
+\addbibresource{\base/includes/bib.bib}
 \nocite{*}
 
 
@@ -124,12 +124,6 @@ Notations :
 
 Hutt, Ryan (BDD)
 
-\subsection{Mémoire}
-
-.
-
-\part{Mathématiques}
-
-\newrefsegment
+\subfile{\base/mathematiques/mathematiques.tex}
 
 \end{document}
